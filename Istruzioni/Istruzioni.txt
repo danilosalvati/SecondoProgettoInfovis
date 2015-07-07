@@ -1,0 +1,7 @@
+L'architettura del sistema al momento è la seguente:
+  - Avvio della rete con mininet
+  - Dalla console di mininet eseguire il dump e salvare il risultato su un file
+  - Eseguire poi lo script python (sempre sulla macchina virtuale) con i seguenti argomenti:
+    - Percorso del file contenente il dump della rete
+    - Nome della cartella (esistente) che conterrà i dati JSON
+    - una stringa del tipo nomeutente@indirizzoIP:percorsodiarrivo che permetta di passare i file dalla macchina virtuale alla directory contenente il sito

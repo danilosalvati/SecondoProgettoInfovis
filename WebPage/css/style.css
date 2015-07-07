@@ -1,0 +1,59 @@
+.container,
+.navbar-static-top .container,
+.navbar-fixed-top .container,
+.navbar-fixed-bottom .container {
+    width: 90%;
+}
+
+.container {
+    margin-right: auto;
+    margin-left: auto;
+    *zoom: 1;
+    border-radius: 15px;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border: 1px solid #ddd;
+    /*border-top:3px solid #ddd;*/
+    /*border-right:3px solid #ddd;*/
+    
+    padding: 50px;
+    background: #fff;
+    -webkit-box-shadow: 2px 2px 3px 0 #C4C4C4;
+    box-shadow: 2px 2px 3px 0 #C4C4C4;
+}
+
+.container:before,
+.container:after {
+    display: table;
+    content: "";
+    line-height: 0;
+}
+
+.container:after {
+    clear: both;
+}
+
+.container-fluid {
+    padding-right: 20px;
+    padding-left: 20px;
+    *zoom: 1;
+}
+
+.container-fluid:before,
+.container-fluid:after {
+    display: table;
+    content: "";
+    line-height: 0;
+}
+
+.container-fluid:after {
+    clear: both;
+}
+td.details-control {
+    background: url('../img/details_open.png') no-repeat center center;
+    cursor: pointer;
+}
+
+tr.shown td.details-control {
+    background: url('../img/details_close.png') no-repeat center center;
+}
