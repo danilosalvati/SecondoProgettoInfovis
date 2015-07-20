@@ -20,19 +20,3 @@ $(document).ready(function () {
     });
 
 });
-
-function getNodes() {
-
-    var json = $.getJSON("../json/JSONNodes.json", function (json) {
-        console.log(json); // this will show the info it in firebug console
-    });
-}
-
-function getNodeInfo(nodeName) {
-
-
-
-
-    //console.log("CIAO");
-    //alert("CIAO");
-}

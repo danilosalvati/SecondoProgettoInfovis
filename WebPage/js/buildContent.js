@@ -3,7 +3,7 @@ function buildNodeInfoTable(nodeName) {
     /* Rimuovo la tabella con le informazioni sul nodo */
     $('#nodeInfo').remove();
     $('#nodeInfoSeparator').remove();
-    $.getJSON("../json/JSONNodes.json", function (json) {
+    $.getJSON("/json/JSONNodes.json", function (json) {
 
         /* estraggo solo le informazioni relative al nodo di interesse */
         for (var node of json.data) {
@@ -87,8 +87,9 @@ function format(d) {
 function buildFlowTable(nameNode) {
     $('#flows').DataTable().destroy();
     $('#flows').remove();
+    $('#chartcontainer').remove();
 
-    $.getJSON("../json/JSONFlows.json", function (json) {
+    $.getJSON("/json/JSONFlows.json", function (json) {
         /* Prendo le flow entry dello switch che mi interessa */
         entries = json[nameNode];
         if (entries != undefined) {
@@ -102,6 +103,56 @@ function buildFlowTable(nameNode) {
                 width: '100%'
             }));
 
+            /* Aggiungo i grafici sotto alla tabella */
+
+            $('#content').append($('<div></div>').attr({
+                id: 'chartcontainer',
+            }));
+
+            $('#chartcontainer').append($('<hr>'));
+
+            $('#chartcontainer').append($('<h3></h3>').attr({
+                id: 'chart1title',
+            }));
+
+            $('#chart1title').html("Grafo (non mi veniva in mente un titolo migliore)<br><br>");
+
+
+            $('#chartcontainer').append($('<svg></svg>').attr({
+                id: 'chart1',
+                class: 'chart',
+            }));
+
+            $('#chartcontainer').append($('<hr>'));
+
+            $('#chartcontainer').append($('<h3></h3>').attr({
+                id: 'chart2title',
+            }));
+
+            $('#chart2title').html("Pacchetti inoltrati per ogni porta di uscita<br><br>");
+
+
+            $('#chartcontainer').append($('<svg></svg>').attr({
+                id: 'chart2',
+                class: 'chart',
+            }));
+
+            $('#chartcontainer').append($('<hr>'));
+
+            $('#chartcontainer').append($('<h3></h3>').attr({
+                id: 'chart3title',
+            }));
+
+            $('#chart3title').html("Numero di pacchetti per ogni flow entry<br><br>");
+
+            $('#chartcontainer').append($('<svg></svg>').attr({
+                id: 'chart3',
+                class: 'chart',
+            }));
+
+            // Costruisco i grafici 
+            buildFrequentEntryChart(entries);
+
             /* Aggiungo il footer alla tabella (necessario per i filtri) */
             $('#flows').append('<tfoot><tr><th></th><th></th><th>Table</th><th>Type</th><th>In port</th>' +
                 '<th>Duration</th><th>Priority</th><th>mac in</th><th>mac out</th><th>actions</th></tr></tfoot>')
@@ -110,7 +161,7 @@ function buildFlowTable(nameNode) {
             var table = $('#flows').DataTable({
                 /* Aggiungo i dati veri e propri */
                 "data": entries,
-                //                "responsive": true,
+                //"responsive": true,
                 "scrollX": true,
                 "columns": [
                     {
@@ -203,6 +254,26 @@ function buildFlowTable(nameNode) {
                     row.child(format(row.data())).show();
                     tr.addClass('shown');
                 }
+            });
+
+            /* Prendo i dati per ogni ricerca */
+            $('#flows').on('search.dt', function () {
+                console.log("Nuova ricerca:");
+                var filteredRows = table.$('tr', {
+                    "filter": "applied"
+                });
+
+                var i;
+                for (i = 0; i < filteredRows.length; i++) {
+
+                    var child = filteredRows[i].children[1];
+                    console.log($(child).html());
+
+                }
+
+                /* Rifaccio il grafico con i dati aggiornati */
+                updateFrequentEntryChart(filteredRows, entries);
+
             });
 
         }

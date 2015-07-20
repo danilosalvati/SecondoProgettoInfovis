@@ -49,6 +49,7 @@
 .container-fluid:after {
     clear: both;
 }
+
 td.details-control {
     background: url('../img/details_open.png') no-repeat center center;
     cursor: pointer;
