@@ -5,7 +5,7 @@
     font-size: 12px;
 }
 
-.chart text {
+text.chart {
     fill: white;
     font: 10px sans-serif;
     text-anchor: end;

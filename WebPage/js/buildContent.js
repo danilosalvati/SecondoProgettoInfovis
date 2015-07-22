@@ -107,6 +107,7 @@ function buildFlowTable(nameNode) {
             addGraphContent();
 
             // Costruisco i grafici 
+            buildTree(entries);
             buildPortUseChart(entries);
             buildFrequentEntryChart(entries);
 
@@ -229,6 +230,7 @@ function buildFlowTable(nameNode) {
                 addGraphContent();
                 updatePortUseChart(filteredRows, entries);
                 updateFrequentEntryChart(filteredRows, entries);
+                updateTree(filteredRows, entries);
 
             });
 
@@ -249,7 +251,7 @@ function addGraphContent() {
         id: 'chart1title',
     }));
 
-    $('#chart1title').html("Grafo (non mi veniva in mente un titolo migliore)<br><br>");
+    $('#chart1title').html("Grafo (non mi veniva in mente un titolo migliore) [Inserito momentaneamente solo per vedere l'occupazione di spazio sulla pagina]<br><br>");
 
 
     $('#chartcontainer').append($('<svg></svg>').attr({

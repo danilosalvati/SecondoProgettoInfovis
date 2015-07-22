@@ -65,6 +65,7 @@ function drawChart(chartData, chartNumber) {
             return x(d) - 3;
         })
         .attr("y", barHeight / 2)
+        .attr("class", "chart")
         .attr("fill", "red")
         .attr("dy", ".35em")
         .text(function (d) {
