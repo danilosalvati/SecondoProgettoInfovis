@@ -70,7 +70,7 @@ function setStrokeFillAndRadius(jsonNode, widthScale, radiusScale) {
 
 
 /** Questa funzione crea l'albero **/
-function buildTree(entries) {
+function buildTree(json) {
     var m = [20, 120, 20, 120],
         w = 1000 - m[1] - m[3],
         h = 800 - m[0] - m[2],
@@ -91,43 +91,43 @@ function buildTree(entries) {
         .append("svg:g")
         .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
 
-    d3.json("json/flare.json", function (json) {
 
-        root = json;
-        root.x0 = h / 2;
-        root.y0 = 0;
 
-        function toggleAll(d) {
-            if (d.children) {
-                d.children.forEach(toggleAll);
-                toggle(d);
-            }
+    root = json;
+    root.x0 = h / 2;
+    root.y0 = 0;
+
+    function toggleAll(d) {
+        if (d.children) {
+            d.children.forEach(toggleAll);
+            toggle(d);
         }
+    }
 
-        // Initialize the display to show a few nodes.
-        root.children.forEach(toggleAll);
-        toggle(root.children[1]);
-        toggle(root.children[1].children[2]);
-        toggle(root.children[9]);
-        toggle(root.children[9].children[0]);
+    // Initialize the display to show a few nodes.
+    root.children.forEach(toggleAll);
+    toggle(root.children[1]);
+    toggle(root.children[1].children[2]);
+    toggle(root.children[9]);
+    toggle(root.children[9].children[0]);
 
-        var minAndMax = getMinAndMaxValues(root);
-        console.log(minAndMax);
+    var minAndMax = getMinAndMaxValues(root);
+    console.log(minAndMax);
 
-        var widthScale = d3.scale.linear()
-            .domain([minAndMax.min, minAndMax.max])
-            .range([1.5, 135]);
+    var widthScale = d3.scale.linear()
+        .domain([minAndMax.min, minAndMax.max])
+        .range([1.5, 135]);
 
-        var radiusScale = d3.scale.linear()
-            .domain([minAndMax.min, minAndMax.max])
-            .range([4.5, 55]);
+    var radiusScale = d3.scale.linear()
+        .domain([minAndMax.min, minAndMax.max])
+        .range([4.5, 55]);
 
-        root.value = minAndMax.max;
+    root.value = minAndMax.max;
 
-        setStrokeFillAndRadius(root, widthScale, radiusScale);
+    setStrokeFillAndRadius(root, widthScale, radiusScale);
 
-        update(root);
-    });
+    update(root);
+
 
     function update(source) {
 
@@ -254,7 +254,7 @@ function buildTree(entries) {
                     }
                 }
             })
-            .style("opacity", ".3")
+            .style("opacity", ".5")
             .transition()
             .duration(duration)
             .attr("d", diagonal);

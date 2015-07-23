@@ -88,11 +88,26 @@ function buildFlowTable(nameNode) {
     $('#flows').DataTable().destroy();
     $('#flows').remove();
     $('#chartcontainer').remove();
+    $('#flowButton').remove();
 
     $.getJSON("json/JSONFlows.json", function (json) {
         /* Prendo le flow entry dello switch che mi interessa */
         entries = json[nameNode];
         if (entries != undefined) {
+
+
+            $('#content').append($('<button></button>').attr({
+                class: 'btn',
+                id: 'flowButton',
+                'data-toggle': "collapse",
+                'data-target': "#flows_wrapper",
+                'aria-expanded': "true",
+                'aria-controls': "collapseExample",
+            }));
+
+            $('#flowButton').text("Mostra/Nascondi la tabella dei flussi");
+
+            $('#content').append('<br><br>');
 
 
             /* Aggiungo la tabella dei flussi alla pagina */
@@ -107,7 +122,13 @@ function buildFlowTable(nameNode) {
             addGraphContent();
 
             // Costruisco i grafici 
-            buildTree(entries);
+
+            //DEBUG!!
+            d3.json("json/flare.json", function (json) {
+                buildTree(json);
+            });
+
+            //buildTreeGraph(entries);
             buildPortUseChart(entries);
             buildFrequentEntryChart(entries);
 
@@ -198,6 +219,12 @@ function buildFlowTable(nameNode) {
                 },
             });
 
+            /* Aggiungo la tabella dei flussi alla pagina */
+            $('#flows_wrapper').attr({
+                class: 'dataTables_wrapper form-inline dt-bootstrap collapse in',
+                'aria-expanded': 'true',
+            });
+
             // Add event listener for opening and closing details
             $('#flows tbody').on('click', 'td.details-control', function () {
                 var tr = $(this).closest('tr');
@@ -230,7 +257,13 @@ function buildFlowTable(nameNode) {
                 addGraphContent();
                 updatePortUseChart(filteredRows, entries);
                 updateFrequentEntryChart(filteredRows, entries);
-                updateTree(filteredRows, entries);
+
+                //DEBUG!!
+                d3.json("json/flare.json", function (json) {
+                    buildTree(json);
+                });
+
+                //updateTreeGraph(filteredRows, entries);
 
             });
 

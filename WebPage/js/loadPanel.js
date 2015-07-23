@@ -4,4 +4,5 @@
          orientation: 'right',
          mode: 'overlay'
      });
+
  });
