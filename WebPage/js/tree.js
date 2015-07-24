@@ -1,7 +1,7 @@
 //TODO testing
 
 //funzione di ausilio che trova la netmask made by Danilo
-function findIpV4Netmask(value){
+function findIpV4Netmask(value) {
     var netmask = '24'; // Di default ho una /24
     /* Estraggo l'eventuale netmask dall'indirizzo ip */
     var netmaskPosition = value.indexOf('/');
@@ -15,77 +15,78 @@ function findIpV4Netmask(value){
 }
 
 //oggetto dell'array toMatch
-var ToMatch = function (name, clusterFun, expandFun){
-    this.fieldName=name;
-    if (clusterFun===undefined)
-        this.filter= function (a){
+var ToMatch = function (name, clusterFun, expandFun) {
+    this.fieldName = name;
+    if (clusterFun === undefined) {
+        this.filter = function (a) {
             return a;
         }
-    else
-        this.filter=clusterFun;
-    if(expandFun===undefined)
-        this.expand=function (){
+    } else {
+        this.filter = clusterFun;
+    }
+    if (expandFun === undefined)
+        this.expand = function () {
             return false;
-    };
+        };
     else
-        this.expand=expandFun;
+        this.expand = expandFun;
 }
 
 //esempio di toMatchArray
 var defaultToMatchArray = [];
 
-var ipOutToMatch = new ToMatch("ip_add_out", findIpV4Netmask, function (elem,index,array){
+var ipOutToMatch = new ToMatch("ip_add_out", findIpV4Netmask, function (elem, index, array) {
     //queste funzioni avranno tutte questa forma
-    var res= new ToMatch("ip_add_out");
-    array.splice(index+1,0,res);//aggiungo il nuovo ToMatch dopo il precedente  
+    var res = new ToMatch("ip_add_out");
+    array.splice(index + 1, 0, res); //aggiungo il nuovo ToMatch dopo il precedente  
     return true;
-} ); 
+});
 
 defaultToMatchArray.push(ipOutToMatch);
 
 //fa in modo tale che tutti i toMatch abbiano eseguito le loro funzioni di expand
-function normalizeToMatchArray(toMatchArray){
+function normalizeToMatchArray(toMatchArray) {
     var eseguito;
-    do{ //esegue fintanto esiste u campo con expand potrebbe non essere necessario
+    do { //esegue fintanto esiste u campo con expand potrebbe non essere necessario
         //poco robusto può portare a loop
-        eseguito=false;
-        toMatchArray.forEach(function (elem, index, array){
-            eseguito= elem.expand(elem, index, array) || eseguito;
+        eseguito = false;
+        toMatchArray.forEach(function (elem, index, array) {
+            eseguito = elem.expand(elem, index, array) || eseguito;
         });
-    }while(eseguito);
+    } while (eseguito);
 }
 
 //funzione a modello per i flussi filtrati
 //defaultFilterFunction ritorna un array di questo oggetto
-var FilteredFlow = function (name){
-    this.name =name;
-    this.entries =[];
+var FilteredFlow = function (name) {
+    this.name = name;
+    this.entries = [];
     this.count = 0;
-    this.addFlow = function (newFlow){
+    this.addFlow = function (newFlow) {
         this.entries.push(newFlow);
         this.count++;
     }
 };
 
-function clusterizedFlow(entries, actualMatch){
+function clusterizedFlow(entries, actualMatch) {
     var flow, c, d, currentName;
-    var res=[];
+    var res = [];
     var fieldName = actualMatch.matchValue.fieldName;
 
-    for(c; c<entries.length; c++){
-        currentName=actualMatch.filter(entries[c][fieldName]);
+    for (c; c < entries.length; c++) {
+        currentName = actualMatch.filter(entries[c][fieldName]);
         //cerca in res un flow con quel nome
         //se ci sta aumenta il contatore e aggiungilo
         //se non ci sta crea il flow e aggiungilo
-        if(currentName===undefined)
-            currentName="no_match";
-        d=res.findIndex(function(elem){
-            return elem[name]===currentName;
+        if (currentName === undefined)
+            currentName = "no_match";
+        d = res.findIndex(function (elem) {
+            return elem[name] === currentName;
         });
-        if (d === -1){
-            flow = new FilteredFlow (currentName);
+        if (d === -1) {
+            flow = new FilteredFlow(currentName);
             res.push(flow);
-            d=0;
+            d = 0;
         }
         res[d].addFlow(entries[c]);
     }
@@ -96,27 +97,27 @@ function clusterizedFlow(entries, actualMatch){
 /** Estrapola un albero dai dati che ha come livelli dettagli di matching decisi da ToMatchArray
     come radice il nodeName
  **/
-function matchingFilter(entries, toMatchArray, nodeName, size){
+function matchingFilter(entries, toMatchArray, nodeName, size) {
     var actualMatch, filtered, root;
 
     if (size === undefined)
-        size=1;
+        size = 1;
 
-    actualMatch=toMatchArray[0];
+    actualMatch = toMatchArray[0];
 
     //le entries ripartite per children filtrate rispetto all'attributo attualmente
     //preso in considerazione
     //i filtered sono i famosi cluster filtrati
-    filtered=clusterizedFlow(entries, actualMatch);
+    filtered = clusterizedFlow(entries, actualMatch);
 
-    root.name=nodeName;
+    root.name = nodeName;
 
-    if (filtered.length!==0)
-        root.children=[];
+    if (filtered.length !== 0)
+        root.children = [];
 
     //espando gli envenutali cluster
-    for (var i; i<filtered.length; i++){
-        root.children.push(matchingFilterHelper(filtered[i], toMatchArray, 1) );
+    for (var i; i < filtered.length; i++) {
+        root.children.push(matchingFilterHelper(filtered[i], toMatchArray, 1));
     }
     return root;
 }
@@ -126,17 +127,18 @@ function matchingFilter(entries, toMatchArray, nodeName, size){
     toMatchArray: lista di dettagli da filtrare
     matched:contatore del numero dei campi già matched.
 */
-function matchingFilterHelper(entries, toMatchArray, matched){
-    var node.name= entries.name;
-    node.size= entries.size; 
+function matchingFilterHelper(entries, toMatchArray, matched) {
+    var node = {};
+    node.name = entries.name;
+    node.size = entries.size;
 
-    var actualMatch=toMatchArray[matched];
-    var filtered=clusterizedFlow(entries, actualMatch.filter);
+    var actualMatch = toMatchArray[matched];
+    var filtered = clusterizedFlow(entries, actualMatch.filter);
 
-    if (matched!==ToMatchArray.length){
-        node.children=[];
-        for (var i; i<filtered.length; i++){
-            node.children.push(matchingFilterHelper(filtered[i], toMatchArray, matched+1) );
+    if (matched !== ToMatchArray.length) {
+        node.children = [];
+        for (var i; i < filtered.length; i++) {
+            node.children.push(matchingFilterHelper(filtered[i], toMatchArray, matched + 1));
         }
     }
     return node;
