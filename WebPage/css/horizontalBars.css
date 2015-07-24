@@ -17,9 +17,11 @@ text.chart {
     text-anchor: end;
 }
 
+/*
 .bar:hover {
     fill: brown;
 }
+*/
 
 .axis path,
 .axis line {
