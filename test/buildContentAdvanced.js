@@ -1,5 +1,5 @@
 /** Costruisco la tabella con il dettaglio delle informazioni sui nodi **/
-function buildNodeInfoTable(nodeName) {
+function buildNodeInfoTableAdvanced(nodeName) {
     /* Rimuovo la tabella con le informazioni sul nodo */
     $('#nodeInfo').remove();
     $('#nodeInfoSeparator').remove();
@@ -84,12 +84,11 @@ function format(d) {
 }
 
 /** Costruisce la tabella delle flow entry per un particolare switch **/
-function buildFlowTable(nameNode) {
+function buildFlowTableAdvanced(nameNode) {
     $('#flows').DataTable().destroy();
     $('#flows').remove();
     $('#chartcontainer').remove();
     $('#flowButton').remove();
-    $('br.toRemove').remove();
 
     $.getJSON("json/JSONFlows.json", function (json) {
         /* Prendo le flow entry dello switch che mi interessa */
@@ -108,7 +107,7 @@ function buildFlowTable(nameNode) {
 
             $('#flowButton').text("Mostra/Nascondi la tabella dei flussi");
 
-            $('#content').append('<br class="toRemove"><br class="toRemove">');
+            $('#content').append('<br><br>');
 
 
             /* Aggiungo la tabella dei flussi alla pagina */
@@ -124,12 +123,12 @@ function buildFlowTable(nameNode) {
 
             // Costruisco i grafici 
 
-            // //DEBUG!!
-            // d3.json("json/flare1.json", function (json) {
-            //     buildTree(json);
-            // });
+            //DEBUG!!
+            d3.json("json/flare.json", function (json) {
+                buildTree(json);
+            });
 
-            buildTreeGraph(entries, nameNode);
+            //buildTreeGraph(entries);
             buildPortUseChart(entries);
             buildFrequentEntryChart(entries);
 
@@ -259,12 +258,12 @@ function buildFlowTable(nameNode) {
                 updatePortUseChart(filteredRows, entries);
                 updateFrequentEntryChart(filteredRows, entries);
 
-                // //DEBUG!!
-                // d3.json("json/flare1.json", function (json) {
-                //     buildTree(json);
-                // });
+                //DEBUG!!
+                d3.json("json/flare.json", function (json) {
+                    buildTree(json);
+                });
 
-                updateTreeGraph(filteredRows, entries, nameNode);
+                //updateTreeGraph(filteredRows, entries);
 
             });
 
@@ -274,7 +273,7 @@ function buildFlowTable(nameNode) {
 }
 
 /** Questa funzione aggiunge gli elementi che si occupano del disegno dei grafici **/
-function addGraphContent() {
+function addGraphContentAdvanced() {
     $('#content').append($('<div></div>').attr({
         id: 'chartcontainer',
     }));

@@ -1,0 +1,34 @@
+"s2": [{
+        "n_packets": "1", il numero di pacchetti di quel tipo
+        "vlan_tci": "0x0000", identificativo della vlan
+        "n_bytes": "42", il numero dei byte del pacchetto
+        "dl_src": "e6:b3:a5:80:93:c6", l'indirizzo mac della porta
+        "actions": "arp_op=1 actions=output:2",
+        "id": "0",
+        "ip_add_out": "10.0.0.1",
+        "idle_timeout": "60",
+        "cookie": "0x0",
+        "ip_add_in": "10.0.0.2",
+        "duration": "29.116s",
+        "table": "0",
+        "dl_dst": "2a:31:3e:44:2b:f6", mac della porta di destinazione
+        "packetType": "arp",
+        "in_port": "1",
+        "priority": "65535"
+
+Lista delle azioni
+        nw_tos: 
+        arp_op: Questa regola si applica solamente ai pacchetti di tipo arp. 
+                https://github.com/CPqD/ofsoftswitch13/wiki/Dpctl-Flow-Mod-Cases
+                http://www.networksorcery.com/enp/protocol/arp.htm#Opcode
+
+
+        }
+
+http://www.brightpointinc.com/interactive/budget/index.html?source=d3js
+
+1)verificare l'algoritmo che esegue il matching
+2)generare un albero di dati come il matching
+3)applicare questa fonte a un grafo conosciuto.
+
+ip add out, packet Type,

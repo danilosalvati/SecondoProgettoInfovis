@@ -1,30 +1,32 @@
 //funzione a modello per i flussi filtrati
 //defaultFilterFunction ritorna un array di questo oggetto
 var FilteredFlow = function (name) {
-    this.name = name;
+    this.commonValue = name;
     this.entries = [];
-    this.count = 0;
+    this.size = 0;
     this.addFlow = function (newFlow) {
         this.entries.push(newFlow);
-        this.count++;
+        this.size+=1;
     }
 };
 
 //suddivide le entries in liste di entries con un field in comune.
 function clusterizedFlow(entries, actualMatch) {
-    var flow, c, d, currentName;
+    var flow, c, d, de, currentName;
     var res = [];
-    var fieldName = actualMatch.matchValue.fieldName;
+    var fieldName = actualMatch.fieldName;
 
-    for (c; c < entries.length; c++) {
+    for (c=0; c < entries.length; c++) {
+        //prendo il valore del campo e lo modifico tramite la funzione di filtering
         currentName = actualMatch.filter(entries[c][fieldName]);
+        
         //cerca in res un flow con quel nome
-        //se ci sta aumenta il contatore e aggiungilo
+        //se ci sta  aggiungilo
         //se non ci sta crea il flow e aggiungilo
         if (currentName === undefined)
             currentName = "no_match";
         d = res.findIndex(function (elem) {
-            return elem[name] === currentName;
+            return elem.commonValue === currentName;
         });
         if (d === -1) {
             flow = new FilteredFlow(currentName);
@@ -37,14 +39,35 @@ function clusterizedFlow(entries, actualMatch) {
     return res;
 }
 
+/*  
+    entries: porzione di dataset analizzata
+    toMatchArray: lista di dettagli da filtrare
+    matched:contatore del numero dei campi già matched.
+*/
+function matchingFilterHelper(filteredFlow, toMatchArray, matched) {
+    var node = new Object();
+    node.name = filteredFlow.commonValue;
+
+    if (matched < toMatchArray.length) {//se non sono nodi foglia
+        var actualMatch = toMatchArray[matched];
+        var filtered = clusterizedFlow(filteredFlow.entries, actualMatch);
+        node.children = [];
+        for (var i=0; i < filtered.length; i++) {
+            node.children.push(matchingFilterHelper(filtered[i], toMatchArray, matched + 1));
+        }
+    }else{
+            node.size = filteredFlow.size;        
+    }
+    return node;
+}
+
 /** Estrapola un albero dai dati che ha come livelli dettagli di matching decisi da ToMatchArray
     come radice il nodeName
  **/
-function matchingFilter(entries, toMatchArray, nodeName, size) {
+function matchingFilter(entries, toMatchArray, nodeName) {
     var actualMatch, filtered, root;
+    root = new Object();
 
-    if (size === undefined)
-        size = 1;
     if(nodeName===undefined) 
         nodeName="selected_node";
     actualMatch = toMatchArray[0];
@@ -53,59 +76,42 @@ function matchingFilter(entries, toMatchArray, nodeName, size) {
     //preso in considerazione
     //i filtered sono i famosi cluster filtrati
     filtered = clusterizedFlow(entries, actualMatch);
-
     root.name = nodeName;
 
     if (filtered.length !== 0)
         root.children = [];
 
     //espando gli envenutali cluster
-    for (var i; i < filtered.length; i++) {
+    for (var i=0; i < filtered.length; i++) {
         root.children.push(matchingFilterHelper(filtered[i], toMatchArray, 1));
     }
     return root;
 }
 
-/*  
-    entries: porzione di dataset analizzata
-    toMatchArray: lista di dettagli da filtrare
-    matched:contatore del numero dei campi già matched.
-*/
-function matchingFilterHelper(entries, toMatchArray, matched) {
-    var node = {};
-    node.name = entries.name;
-    node.size = entries.size;
-
-    var actualMatch = toMatchArray[matched];
-    var filtered = clusterizedFlow(entries, actualMatch.filter);
-
-    if (matched !== toMatchArray.length) {
-        node.children = [];
-        for (var i; i < filtered.length; i++) {
-            node.children.push(matchingFilterHelper(filtered[i], toMatchArray, matched + 1));
-        }
-    }
-    return node;
-}
-
 /** Questa funzione crea l'albero **/
-function buildTreeGraph(entries, toMatchArray, nodeName, size) {
+function buildTreeGraph(entries, nodeName, toMatchArray) {
 
+    //se non specificato ne prende uno di default
+    if (toMatchArray===undefined)
+        toMatchArray=defaultToMatchArray;
+    normalizeToMatchArray(defaultToMatchArray);
     /*********************************
      * Per prima cosa converto le entries nel formato
      * di interesse
      *********************************/
-    var json = matchingFilter(entries,toMatchArray, nodeName, size);
+    var json = matchingFilter(entries,toMatchArray, nodeName);
+    json.children.forEach(function (elem){
+        console.log(elem);
+    });
 
     /* Adesso che ho creato l'oggetto json con i giusti valori posso
      * costruire l'albero */
-
     buildTree(json);
 
 }
 
 /** Questa funzione aggiorna il grafico ad albero **/
-function updateTreeGraph(filteredRows, entries) {
+function updateTreeGraph(filteredRows, entries, nameNode) {
 
     /* Estraggo solo le entries che mi servono */
     var i, j;
@@ -122,6 +128,6 @@ function updateTreeGraph(filteredRows, entries) {
     }
 
     if (entriesFiltered.length > 0) {
-        buildTreeGraph(entriesFiltered);
+        buildTreeGraph(entriesFiltered,nameNode);
     }
 }
