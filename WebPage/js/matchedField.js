@@ -16,7 +16,7 @@ function findIpV4Netmask(value) {
 var ToMatch = function (name, clusterFun, expandFun) {
     //attributo json che identifica il campo di interesse
     this.fieldName = name;
-
+    this.toExpand = true;
     //funzione che modifica il valore del campo per confrontarlo
     if (clusterFun === undefined) {
         this.filter = function (a) {
@@ -29,7 +29,8 @@ var ToMatch = function (name, clusterFun, expandFun) {
     //funzione che permette di introdurre un nuovo livello di filtering
     if (expandFun === undefined)
         this.expand = function () {
-            return false;
+            this.toExpand = false;
+            return this.toExpand;
         };
     else
         this.expand = expandFun;
@@ -41,7 +42,8 @@ function defualtExpandFunction(elem, index, array){
     var oldFieldName=this.fieldName;
     var res = new ToMatch(oldFieldName);
     array.splice(index + 1, 0, res); //aggiungo il nuovo ToMatch dopo il precedente  
-    return true;
+    this.toExpand=false;
+    return this.toExpand;
 }
 
 //fa in modo tale che tutti i toMatch abbiano eseguito le loro funzioni di expand
@@ -49,9 +51,14 @@ function normalizeToMatchArray(toMatchArray) {
     //esegue fintanto esiste un campo con expand non di default
     // potrebbe non essere necessario
     //poco robusto può portare a loop
-    toMatchArray.forEach(function (elem, index, array) {
-        elem.expand(elem, index, array);
-    });
+    do{
+        redo=false;
+        toMatchArray.forEach(function (elem, index, array) {
+            if(elem.toExpand){
+                redo=elem.expand(elem, index, array) || redo;
+            }
+        });
+    }while(redo);
 }
 
 //esempio di toMatchArray
