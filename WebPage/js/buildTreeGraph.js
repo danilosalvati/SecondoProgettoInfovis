@@ -25,11 +25,10 @@ function clusterizedFlow(entries, actualMatch) {
         //se non ci sta crea il flow e aggiungilo
         if (currentName === undefined)
             currentName = "no_match";
+        d=-1;
         res.forEach(function (elem, index){
             if (elem.commonValue === currentName)
                 d=index;
-            else
-                d=-1;
         });
         if (d === -1) {
             flow = new FilteredFlow(currentName);
