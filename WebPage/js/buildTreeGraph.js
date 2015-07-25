@@ -28,6 +28,8 @@ function clusterizedFlow(entries, actualMatch) {
         res.forEach(function (elem, index){
             if (elem.commonValue === currentName)
                 d=index;
+            else
+                d=-1;
         });
         if (d === -1) {
             flow = new FilteredFlow(currentName);
@@ -36,7 +38,6 @@ function clusterizedFlow(entries, actualMatch) {
         }
         res[d].addFlow(entries[c]);
     }
-
     return res;
 }
 
