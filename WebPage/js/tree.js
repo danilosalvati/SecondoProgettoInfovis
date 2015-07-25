@@ -105,12 +105,13 @@ function buildTree(json) {
         }
     }
 
+
     // Initialize the display to show a few nodes.
-    // root.children.forEach(toggleAll);
-    // toggle(root.children[1]);
-    // toggle(root.children[1].children[2]);
-    // toggle(root.children[9]);
-    // toggle(root.children[9].children[0]);
+    root.children.forEach(toggleAll);
+    //    toggle(root.children[1]);
+    //    toggle(root.children[1].children[2]);
+    //    toggle(root.children[9]);
+    //    toggle(root.children[9].children[0]);
 
     var minAndMax = getMinAndMaxValues(root);
 
@@ -295,10 +296,9 @@ function buildTree(json) {
         }
     }
 
-    $("#chartcontainer").html($("#chartcontainer").html());
+    //$("#chartcontainer").html($("#chartcontainer").html());
 }
 
 function updateTree(filteredRows, entries) {
     buildTree(entries);
 }
-

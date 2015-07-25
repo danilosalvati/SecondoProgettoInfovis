@@ -6,7 +6,7 @@ var FilteredFlow = function (name) {
     this.size = 0;
     this.addFlow = function (newFlow) {
         this.entries.push(newFlow);
-        this.size+=1;
+        this.size += 1;
     }
 };
 
@@ -16,19 +16,19 @@ function clusterizedFlow(entries, actualMatch) {
     var res = [];
     var fieldName = actualMatch.fieldName;
 
-    for (c=0; c < entries.length; c++) {
+    for (c = 0; c < entries.length; c++) {
         //prendo il valore del campo e lo modifico tramite la funzione di filtering
         currentName = actualMatch.filter(entries[c][fieldName]);
-        
+
         //cerca in res un flow con quel nome
         //se ci sta  aggiungilo
         //se non ci sta crea il flow e aggiungilo
         if (currentName === undefined)
             currentName = "no_match";
-        d=-1;
-        res.forEach(function (elem, index){
+        d = -1;
+        res.forEach(function (elem, index) {
             if (elem.commonValue === currentName)
-                d=index;
+                d = index;
         });
         if (d === -1) {
             flow = new FilteredFlow(currentName);
@@ -49,15 +49,15 @@ function matchingFilterHelper(filteredFlow, toMatchArray, matched) {
     var node = new Object();
     node.name = filteredFlow.commonValue;
 
-    if (matched < toMatchArray.length) {//se non sono nodi foglia
+    if (matched < toMatchArray.length) { //se non sono nodi foglia
         var actualMatch = toMatchArray[matched];
         var filtered = clusterizedFlow(filteredFlow.entries, actualMatch);
         node.children = [];
-        for (var i=0; i < filtered.length; i++) {
+        for (var i = 0; i < filtered.length; i++) {
             node.children.push(matchingFilterHelper(filtered[i], toMatchArray, matched + 1));
         }
-    }else{
-            node.size = filteredFlow.size;        
+    } else {
+        node.size = filteredFlow.size;
     }
     return node;
 }
@@ -69,8 +69,8 @@ function matchingFilter(entries, toMatchArray, nodeName) {
     var actualMatch, filtered, root;
     root = new Object();
 
-    if(nodeName===undefined) 
-        nodeName="selected_node";
+    if (nodeName === undefined)
+        nodeName = "selected_node";
     actualMatch = toMatchArray[0];
 
     //le entries ripartite per children filtrate rispetto all'attributo attualmente
@@ -83,7 +83,7 @@ function matchingFilter(entries, toMatchArray, nodeName) {
         root.children = [];
 
     //espando gli envenutali cluster
-    for (var i=0; i < filtered.length; i++) {
+    for (var i = 0; i < filtered.length; i++) {
         root.children.push(matchingFilterHelper(filtered[i], toMatchArray, 1));
     }
     return root;
@@ -93,17 +93,19 @@ function matchingFilter(entries, toMatchArray, nodeName) {
 function buildTreeGraph(entries, nodeName, toMatchArray) {
 
     //se non specificato ne prende uno di default
-    if (toMatchArray===undefined)
-        toMatchArray=defaultToMatchArray;
+    if (toMatchArray === undefined)
+        toMatchArray = defaultToMatchArray;
     normalizeToMatchArray(defaultToMatchArray);
     /*********************************
      * Per prima cosa converto le entries nel formato
      * di interesse
      *********************************/
-    var json = matchingFilter(entries,toMatchArray, nodeName);
-    json.children.forEach(function (elem){
+    var json = matchingFilter(entries, toMatchArray, nodeName);
+
+    json.children.forEach(function (elem) {
         console.log(elem);
     });
+
 
     /* Adesso che ho creato l'oggetto json con i giusti valori posso
      * costruire l'albero */
@@ -129,6 +131,6 @@ function updateTreeGraph(filteredRows, entries, nameNode) {
     }
 
     if (entriesFiltered.length > 0) {
-        buildTreeGraph(entriesFiltered,nameNode);
+        buildTreeGraph(entriesFiltered, nameNode);
     }
 }
