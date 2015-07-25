@@ -260,7 +260,6 @@ function buildTree(json) {
     toggle(root.children[9].children[0]);
 
     var minAndMax = getMinAndMaxValues(root);
-    console.log(minAndMax);
 
     var widthScale = d3.scale.linear()
         .domain([minAndMax.min, minAndMax.max])
@@ -339,7 +338,6 @@ function buildTree(json) {
 
         nodeUpdate.select("circle")
             .attr("r", function (d) {
-                console.log(d);
                 return d.radius;
             })
             .style("opacity", ".8")
@@ -396,8 +394,6 @@ function buildTree(json) {
 
                 for (i = 0; i < arr.length; i++) {
                     if (arr[i].id === d.target.id) {
-                        console.log(arr[i].name);
-                        console.log(arr[i].strokeFill);
                         return arr[i].strokeFill;
                     }
                 }

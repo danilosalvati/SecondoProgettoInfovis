@@ -29,6 +29,31 @@ function buildFrequentEntryChart(entries) {
     // Adesso disegno il grafico
     drawChart(chartData, 3);
 
+    /* Aggiungo i tip alle barre */
+    $('#chart3 rect').tipsy({
+        gravity: 'w',
+        html: true,
+        title: function () {
+            /* Estraggo l'entries corretta */
+            var entry = entries[this.id];
+            var description = "type: " + entry.packetType + "<br>";
+            description += "ip in: " + entry.ip_add_in + "<br>";
+            description += "ip out: " + entry.ip_add_out + "<br>";
+            return description;
+        }
+    });
+
+    /* Aggiungo l'effetto hover per tutte le barre con i tip */
+    $('#chart3 rect').hover(function () {
+        $(this).css({
+            fill: 'brown'
+        });
+    }, function (d, i) {
+        var color = d3.scale.category20();
+        $(this).css({
+            fill: color(i % chartData.series.length)
+        })
+    });
 }
 
 /* Questa funzione aggiorna il grafico relativo alla frequenza delle flow entry
@@ -123,7 +148,7 @@ function buildPortUseChart(entries) {
                 if (chartData.series[j].label === network) { // Cerco i dati relativi alla netmask appena trovata
                     found = true;
                     var portIndex = $.inArray(outPort, chartData.labels); // Prendo l'indice della porta
-                    chartData.series[j].values[portIndex] += 1;
+                    chartData.series[j].values[portIndex] += parseInt(entries[i].n_packets);
                 }
             }
 

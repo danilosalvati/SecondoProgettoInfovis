@@ -5,8 +5,8 @@ function drawChart(chartData, chartNumber) {
         barHeight = 20,
         groupHeight = barHeight * chartData.series.length,
         gapBetweenGroups = 10,
-        spaceForLabels = 150,
-        spaceForLegend = 150;
+        spaceForLabels = 130,
+        spaceForLegend = 170;
 
     // Zip the series data together (first values, second values, etc.)
     var zippedData = [];
@@ -56,8 +56,12 @@ function drawChart(chartData, chartNumber) {
             return color(i % chartData.series.length);
         })
         .attr("class", "bar")
+        .attr("id", function (d, i) {
+            var id = i - 1;
+            return id;
+        })
         .attr("width", x)
-        .attr("height", barHeight - 1);
+        .attr("height", barHeight - 1)
 
     // Add text label in bar
     bar.append("text")
@@ -129,5 +133,4 @@ function drawChart(chartData, chartNumber) {
     // Fondamentale per risolvere un bug di juery che non aggiunge gli svg
     // http://stackoverflow.com/a/13654655
     $("#chartcontainer").html($("#chartcontainer").html());
-
 }
