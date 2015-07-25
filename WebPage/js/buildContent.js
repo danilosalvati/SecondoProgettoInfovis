@@ -123,13 +123,14 @@ function buildFlowTable(nameNode) {
             addGraphContent();
 
             // Costruisco i grafici 
+            //            d3.json("json/flare1.json", function (json) {
+            //                buildTreeGraph(entries, nameNode);
+            //            });
 
-            d3.json("json/flare1.json", function (json) {
+            setTimeout(function () {
                 buildTreeGraph(entries, nameNode);
-            });
+            }, 0);
 
-
-            //buildTreeGraph(entries, nameNode);
             buildPortUseChart(entries);
             buildFrequentEntryChart(entries);
 
