@@ -9,7 +9,7 @@ function findIpV4Netmask(value) {
     /* Calcolo il prefisso utilizzando un'apposita libreria */
     IPv4_Address(value, netmask);
     //this.netaddressDotQuad è il prefisso ricavato.
-    return this.netaddressDotQuad + '/' + netmask;
+    return netaddressDotQuad + '/' + netmask;
 }
 
 //oggetto dell'array toMatch

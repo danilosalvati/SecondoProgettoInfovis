@@ -32,8 +32,8 @@ function clusterizedFlow(entries, actualMatch) {
         });
         if (d === -1) {
             flow = new FilteredFlow(currentName);
+            d = res.length;
             res.push(flow);
-            d = 0;
         }
         res[d].addFlow(entries[c]);
     }
@@ -102,11 +102,7 @@ function buildTreeGraph(entries, nodeName, toMatchArray) {
      * di interesse
      *********************************/
     var json = matchingFilter(entries, toMatchArray, nodeName);
-
-    json.children.forEach(function (elem) {
-        console.log(elem);
-    });
-
+    console.log(json.children[0].children[1]);
 
     /* Adesso che ho creato l'oggetto json con i giusti valori posso
      * costruire l'albero */

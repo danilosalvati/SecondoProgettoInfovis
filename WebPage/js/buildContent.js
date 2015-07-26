@@ -286,7 +286,7 @@ function addGraphContent() {
         id: 'chart1title',
     }));
 
-    $('#chart1title').html("Grafo (non mi veniva in mente un titolo migliore) [Inserito momentaneamente solo per vedere l'occupazione di spazio sulla pagina]<br><br>");
+    $('#chart1title').html("Albero di matching");
 
 
     $('#chartcontainer').append($('<svg></svg>').attr({
