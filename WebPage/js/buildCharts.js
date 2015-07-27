@@ -18,13 +18,31 @@ function buildFrequentEntryChart(entries) {
     }
 
     // Per prima cosa estraggo le informazioni di interesse dalle righe
-    var i;
-    for (i = 0; i < entries.length; i++) {
 
-        chartData.labels.push(entries[i].id); // Estraggo l'id
-        chartData.series[0].values.push(entries[i].n_packets); // Estraggo il numero di pacchetti
+    var i;
+    var data = [];
+    for (i = 0; i < entries.length; i++) {
+        data.push({
+            id: entries[i].id,
+            packets: entries[i].n_packets
+        });
+    }
+
+    data.sort(function (a, b) {
+        return b.packets - a.packets
+    });
+
+
+    // Estraggo solo i primi 10 valori (altrimenti la rappresentazione perde di valore)
+    data = data.slice(0, 10);
+
+    for (i = 0; i < data.length; i++) {
+
+        chartData.labels.push(data[i].id); // Estraggo l'id
+        chartData.series[0].values.push(data[i].packets); // Estraggo il numero di pacchetti
 
     }
+
 
     // Adesso disegno il grafico
     drawChart(chartData, 3);
@@ -34,12 +52,22 @@ function buildFrequentEntryChart(entries) {
         gravity: 'w',
         html: true,
         title: function () {
-            /* Estraggo l'entries corretta */
-            var entry = entries[this.id];
+
+            /* Estraggo l'entry corretta */
+            var i, entry;
+            var found = false;
+            for (i = 0; i < entries.length && !found; i++) {
+                if (entries[i].id === this.id) {
+                    entry = entries[i];
+                    found = true;
+                }
+            }
+
             var description = "type: " + entry.packetType + "<br>";
             description += "ip in: " + entry.ip_add_in + "<br>";
             description += "ip out: " + entry.ip_add_out + "<br>";
             return description;
+
         }
     });
 
@@ -114,7 +142,7 @@ function buildPortUseChart(entries) {
     }
 
     chartData.labels.sort();
-    chartData.labels.unshift('Porta openflow');
+    chartData.labels.unshift('Porta');
 
     for (i = 0; i < entries.length; i++) {
 

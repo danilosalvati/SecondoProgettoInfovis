@@ -36,7 +36,7 @@ function drawChart(chartData, chartNumber) {
     // Specify the chart area and dimensions
     var chart = d3.select("#chart" + chartNumber)
         //.attr("width", spaceForLabels + chartWidth + spaceForLegend)
-        .attr("width", 1600)
+        .attr("width", 1000)
         .attr("height", chartHeight);
 
     //        var chart = d3.select(".chart")
@@ -58,8 +58,10 @@ function drawChart(chartData, chartNumber) {
         })
         .attr("class", "bar")
         .attr("id", function (d, i) {
-            var id = i - 1;
-            return id;
+            if (chartData.labels !== undefined) {
+                return chartData.labels[i];
+            }
+            return "";
         })
         //.attr("width", x)
         .attr("width", function (d, i) {

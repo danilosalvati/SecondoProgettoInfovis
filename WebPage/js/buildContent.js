@@ -314,7 +314,7 @@ function addGraphContent() {
         id: 'chart3title',
     }));
 
-    $('#chart3title').html("Numero di pacchetti per ogni flow entry<br><br>");
+    $('#chart3title').html("Numero di pacchetti per le prime dieci flow entry<br><br>");
 
     $('#chartcontainer').append($('<svg></svg>').attr({
         id: 'chart3',
