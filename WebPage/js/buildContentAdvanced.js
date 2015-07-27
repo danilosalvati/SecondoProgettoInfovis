@@ -43,7 +43,7 @@ function buildNodeInfoTableAdvanced(nodeName) {
     });
 }
 
-function format(d) {
+function formatAdvanced(d) {
     // `d` is the original data object for the row
     return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;" class = "table table-striped table-hover table-condensed">' +
         '<tr>' +

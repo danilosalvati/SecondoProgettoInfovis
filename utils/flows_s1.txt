@@ -1,0 +1,6 @@
+NXST_FLOW reply (xid=0x4):
+ cookie=0x0, duration=3.363s, table=0, n_packets=1, n_bytes=42, idle_timeout=60, idle_age=3, priority=65535,arp,in_port=1,vlan_tci=0x0000,dl_src=ea:7c:ef:f3:0b:16,dl_dst=42:5a:40:55:15:f6,arp_spa=10.0.0.1,arp_tpa=10.0.0.2,arp_op=1 actions=output:2
+ cookie=0x0, duration=3.349s, table=0, n_packets=1, n_bytes=42, idle_timeout=60, idle_age=3, priority=65535,arp,in_port=2,vlan_tci=0x0000,dl_src=42:5a:40:55:15:f6,dl_dst=ea:7c:ef:f3:0b:16,arp_spa=10.0.0.2,arp_tpa=10.0.0.1,arp_op=2 actions=output:1
+ cookie=0x0, duration=8.306s, table=0, n_packets=1, n_bytes=98, idle_timeout=60, idle_age=8, priority=65535,icmp,in_port=1,vlan_tci=0x0000,dl_src=ea:7c:ef:f3:0b:16,dl_dst=42:5a:40:55:15:f6,nw_src=10.0.0.1,nw_dst=10.0.0.2,nw_tos=0,icmp_type=0,icmp_code=0 actions=output:2
+ cookie=0x0, duration=8.359s, table=0, n_packets=1, n_bytes=98, idle_timeout=60, idle_age=8, priority=65535,icmp,in_port=2,vlan_tci=0x0000,dl_src=42:5a:40:55:15:f6,dl_dst=ea:7c:ef:f3:0b:16,nw_src=10.0.0.2,nw_dst=10.0.0.1,nw_tos=0,icmp_type=0,icmp_code=0 actions=output:1
+ cookie=0x0, duration=8.311s, table=0, n_packets=1, n_bytes=98, idle_timeout=60, idle_age=8, priority=65535,icmp,in_port=2,vlan_tci=0x0000,dl_src=42:5a:40:55:15:f6,dl_dst=ea:7c:ef:f3:0b:16,nw_src=10.0.0.2,nw_dst=10.0.0.1,nw_tos=0,icmp_type=8,icmp_code=0 actions=output:1

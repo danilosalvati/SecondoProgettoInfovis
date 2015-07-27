@@ -67,13 +67,13 @@ function format(d) {
         '</tr>' +
 
         '<tr>' +
-        '<td>Ip in: </td>' +
-        '<td>' + d.ip_add_in + '</td>' +
+        '<td>Mac in: </td>' +
+        '<td>' + d.dl_src + '</td>' +
         '</tr>' +
 
         '<tr>' +
-        '<td>Ip out: </td>' +
-        '<td>' + d.ip_add_out + '</td>' +
+        '<td>Mac out: </td>' +
+        '<td>' + d.dl_dst + '</td>' +
         '</tr>' +
 
         '<tr>' +
@@ -95,8 +95,6 @@ function buildFlowTable(nameNode) {
         /* Prendo le flow entry dello switch che mi interessa */
         entries = json[nameNode];
         if (entries != undefined) {
-
-
             $('#content').append($('<button></button>').attr({
                 class: 'btn',
                 id: 'flowButton',
@@ -150,15 +148,17 @@ function buildFlowTable(nameNode) {
                         "orderable": false,
                         "data": null,
                         "defaultContent": ''
-},
+                    },
                     {
                         "title": "Id",
                         "data": "id",
+                        "orderDataType": "numeric",
                         orderable: false
 
                     },
                     {
                         "title": "Table",
+                        "orderDataType": "numeric",
                         "data": "table"
 
                     },
@@ -169,6 +169,7 @@ function buildFlowTable(nameNode) {
                     },
                     {
                         "title": "In port",
+                        "orderDataType": "numeric",
                         "data": "in_port"
 
                     },
@@ -178,15 +179,16 @@ function buildFlowTable(nameNode) {
                     },
                     {
                         "title": "Priority",
+                        "orderDataType": "numeric",
                         "data": "priority",
                     },
                     {
-                        "title": "mac in",
-                        "data": "dl_src",
+                        "title": "ip in",
+                        "data": "ip_add_in",
                     },
                     {
-                        "title": "mac out",
-                        "data": "dl_dst",
+                        "title": "ip out",
+                        "data": "ip_add_out",
                     },
                     {
                         "title": "actions",
@@ -212,10 +214,22 @@ function buildFlowTable(nameNode) {
                                         .search(val ? '^' + val + '$' : '', true, false)
                                         .draw();
                                 });
-
-                            column.data().unique().sort().each(function (d, j) {
-                                select.append('<option value="' + d + '">' + d + '</option>')
-                            });
+                            // Se sto prendendo l'id allora ordino gli elementi della select in modo diverso
+                            if (columnIndex === 2) {
+                                var i;
+                                for (i = 0; i < column.data().length; i++) {
+                                    select.append('<option value="' + parseInt(column.data()[i]) + '">' + parseInt(column.data()[i]) +
+                                        '</option>')
+                                }
+                            } else {
+                                column.data().unique().sort().each(function (d, j) {
+                                    if (columnIndex === 2) {
+                                        console.log(d);
+                                        d = parseInt(d);
+                                    }
+                                    select.append('<option value="' + d + '">' + d + '</option>')
+                                });
+                            }
                         }
                     });
                 },
