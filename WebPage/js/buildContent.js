@@ -3,7 +3,7 @@ function buildNodeInfoTable(nodeName) {
     /* Rimuovo la tabella con le informazioni sul nodo */
     $('#nodeInfo').remove();
     $('#nodeInfoSeparator').remove();
-    $.getJSON("json/JSONNodes.json", function (json) {
+    $.getJSON("json/JSONNodes2.json", function (json) {
 
         /* estraggo solo le informazioni relative al nodo di interesse */
         for (var node of json.data) {
@@ -91,7 +91,7 @@ function buildFlowTable(nameNode) {
     $('#flowButton').remove();
     $('br.toRemove').remove();
 
-    $.getJSON("json/JSONFlows.json", function (json) {
+    $.getJSON("json/JSONFlows2.json", function (json) {
         /* Prendo le flow entry dello switch che mi interessa */
         entries = json[nameNode];
         if (entries != undefined) {

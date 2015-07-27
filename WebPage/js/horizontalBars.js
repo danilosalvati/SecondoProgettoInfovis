@@ -1,11 +1,11 @@
 /** Questa funzione disegna un horizontal bar chart **/
 function drawChart(chartData, chartNumber) {
 
-    var chartWidth = 300,
+    var chartWidth = 600,
         barHeight = 20,
         groupHeight = barHeight * chartData.series.length,
         gapBetweenGroups = 10,
-        spaceForLabels = 130,
+        spaceForLabels = 100,
         spaceForLegend = 170;
 
     // Zip the series data together (first values, second values, etc.)
@@ -22,7 +22,7 @@ function drawChart(chartData, chartNumber) {
 
     var x = d3.scale.linear()
         .domain([0, d3.max(zippedData)])
-        .range([0, chartWidth]);
+        .range([10, chartWidth]);
 
     var y = d3.scale.linear()
         .range([chartHeight + gapBetweenGroups, 0]);
@@ -35,7 +35,8 @@ function drawChart(chartData, chartNumber) {
 
     // Specify the chart area and dimensions
     var chart = d3.select("#chart" + chartNumber)
-        .attr("width", spaceForLabels + chartWidth + spaceForLegend)
+        //.attr("width", spaceForLabels + chartWidth + spaceForLegend)
+        .attr("width", 1600)
         .attr("height", chartHeight);
 
     //        var chart = d3.select(".chart")
@@ -60,7 +61,14 @@ function drawChart(chartData, chartNumber) {
             var id = i - 1;
             return id;
         })
-        .attr("width", x)
+        //.attr("width", x)
+        .attr("width", function (d, i) {
+            if (i < chartData.series.length) {
+                //Escludo l'etichetta dell'asse
+                return 0;
+            }
+            return x(d);
+        })
         .attr("height", barHeight - 1)
 
     // Add text label in bar

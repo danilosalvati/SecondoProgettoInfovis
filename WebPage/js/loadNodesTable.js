@@ -1,6 +1,6 @@
 $(document).ready(function () {
     var nodeTable = $('#nodes').dataTable({
-        ajax: "../json/JSONNodes.json",
+        ajax: "../json/JSONNodes2.json",
         "scrollY": "200px",
         "scrollCollapse": true,
         "paging": false,
