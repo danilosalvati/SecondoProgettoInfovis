@@ -88,7 +88,7 @@ function buildPortUseChart(entries) {
 
     /* Costruisco lo scheletro dell'oggetto risultato */
     var chartData = {
-        labels: ['porta openflow'],
+        labels: [],
         series: []
     };
 
@@ -112,6 +112,9 @@ function buildPortUseChart(entries) {
             }
         }
     }
+
+    chartData.labels.sort();
+    chartData.labels.unshift('Porta openflow');
 
     for (i = 0; i < entries.length; i++) {
 
