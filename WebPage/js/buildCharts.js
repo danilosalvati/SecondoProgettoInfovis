@@ -144,6 +144,7 @@ function buildPortUseChart(entries) {
     chartData.labels.sort();
     chartData.labels.unshift('Porta');
 
+
     for (i = 0; i < entries.length; i++) {
 
         // Calcolo la porta di uscita se è stata definita
@@ -192,7 +193,7 @@ function buildPortUseChart(entries) {
                 var z;
                 for (z = 0; z < chartData.labels.length; z++) {
                     if (chartData.labels[z] === outPort) {
-                        data.values[z] = 1;
+                        data.values[z] = parseInt(entries[i].n_packets);
                     } else {
                         data.values[z] = 0;
                     }
