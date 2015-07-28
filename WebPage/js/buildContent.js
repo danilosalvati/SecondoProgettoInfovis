@@ -47,8 +47,8 @@ function format(d) {
     // `d` is the original data object for the row
     return '<table cellpadding="5" cellspacing="0" border="0" style="padding-left:50px;" class = "table table-striped table-hover table-condensed">' +
         '<tr>' +
-        '<td>Numero di pacchetti: </td>' +
-        '<td>' + d.n_packets + '</td>' +
+        '<td>Priority: </td>' +
+        '<td>' + d.priority + '</td>' +
         '</tr>' +
 
         '<tr>' +
@@ -178,9 +178,9 @@ function buildFlowTable(nameNode) {
                         "data": "duration"
                     },
                     {
-                        "title": "Priority",
+                        "title": "Numero di pacchetti",
                         "orderDataType": "numeric",
-                        "data": "priority",
+                        "data": "n_packets",
                     },
                     {
                         "title": "ip in",
@@ -221,12 +221,22 @@ function buildFlowTable(nameNode) {
                                     select.append('<option value="' + parseInt(column.data()[i]) + '">' + parseInt(column.data()[i]) +
                                         '</option>')
                                 }
+                            } else if (columnIndex === 7) {
+                                // Se sto prendendo il numero di pacchetti ordino gli elementi della select in modo diverso
+                                var tmp = [];
+                                var i;
+                                var uniqueValues = column.data().unique();
+                                for (i = 0; i < uniqueValues.length; i++) {
+                                    tmp.push(parseInt(uniqueValues[i]));
+                                }
+                                tmp.sort(function (a, b) {
+                                    return a - b;
+                                });
+                                tmp.forEach(function (d) {
+                                    select.append('<option value="' + d + '">' + d + '</option>');
+                                });
                             } else {
                                 column.data().unique().sort().each(function (d, j) {
-                                    if (columnIndex === 2) {
-                                        console.log(d);
-                                        d = parseInt(d);
-                                    }
                                     select.append('<option value="' + d + '">' + d + '</option>')
                                 });
                             }

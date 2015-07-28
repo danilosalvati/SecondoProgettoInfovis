@@ -1,12 +1,15 @@
 /** Questa funzione disegna un horizontal bar chart **/
-function drawChart(chartData, chartNumber) {
+function drawChart(chartData, chartNumber, gapBetweenGroups) {
 
     var chartWidth = 600,
         barHeight = 20,
         groupHeight = barHeight * chartData.series.length,
-        gapBetweenGroups = 10,
         spaceForLabels = 100,
         spaceForLegend = 170;
+
+    if (gapBetweenGroups === undefined) {
+        gapBetweenGroups = 10;
+    }
 
     // Zip the series data together (first values, second values, etc.)
     var zippedData = [];

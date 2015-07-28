@@ -225,7 +225,7 @@ function buildPortUseChart(entries) {
 
 
     // Adesso disegno il grafico
-    drawChart(chartData, 2);
+    drawChart(chartData, 2, 40);
 
 }
 
