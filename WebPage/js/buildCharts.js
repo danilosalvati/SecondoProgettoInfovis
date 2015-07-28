@@ -251,3 +251,44 @@ function updatePortUseChart(filteredRows, entries) {
         buildPortUseChart(entriesFiltered);
     }
 }
+
+/** Questa funzione disegna il quarto grafico, relativo all'andamento del numero di pacchetti sulle varie flow entry **/
+function buildFocusContextChart(entries) {
+
+    d3.csv("/json/data.csv", type, function (error, data) {
+        //console.log(type);
+        console.log(data);
+        console.log(error);
+        drawFocusContextChart(data)
+    });
+
+
+}
+
+/** Questa funzione aggiorna il quarto grafico, relativo all'andamento del numero di pacchetti sulle varie flow entry **/
+function updateFocusContextChart(filteredRows, entries) {
+    var i, j;
+    var entriesFiltered = [];
+    for (i = 0; i < filteredRows.length; i++) {
+        var found = false;
+        var id = $(filteredRows[i].children[1]).html();
+        for (j = 0; j < entries.length && !found; j++) {
+            if (entries[j].id === id) {
+                found = true;
+                entriesFiltered.push(entries[j]);
+            }
+        }
+    }
+
+    if (entriesFiltered.length > 0) {
+        buildFocusContextChart(entriesFiltered);
+    }
+}
+
+var parseDate = d3.time.format("%b %Y").parse;
+
+function type(d) {
+    d.date = parseDate(d.date);
+    d.price = +d.price;
+    return d;
+}

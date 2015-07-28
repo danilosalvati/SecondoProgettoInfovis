@@ -131,6 +131,7 @@ function buildFlowTable(nameNode) {
 
             buildPortUseChart(entries);
             buildFrequentEntryChart(entries);
+            buildFocusContextChart(entries);
 
             /* Aggiungo il footer alla tabella (necessario per i filtri) */
             $('#flows').append('<tfoot><tr><th></th><th></th><th>Table</th><th>Type</th><th>In port</th>' +
@@ -290,6 +291,7 @@ function buildFlowTable(nameNode) {
                 // });
 
                 updateTreeGraph(filteredRows, entries, nameNode);
+                updateFocusContextChart(filteredRows, entries);
 
             });
 
@@ -344,5 +346,20 @@ function addGraphContent() {
         id: 'chart3',
         class: 'chart',
     }));
+
+    $('#chartcontainer').append($('<hr>'));
+
+    $('#chartcontainer').append($('<h3></h3>').attr({
+        id: 'chart4title',
+    }));
+
+    $('#chart4title').html("Andamento del numero di pacchetti per flows<br><br>");
+
+    $('#chartcontainer').append($('<svg></svg>').attr({
+        id: 'chart4',
+        class: 'chart',
+    }));
+
+
 
 }

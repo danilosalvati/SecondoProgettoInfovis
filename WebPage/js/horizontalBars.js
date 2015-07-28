@@ -85,7 +85,10 @@ function drawChart(chartData, chartNumber, gapBetweenGroups) {
         .attr("class", "chart")
         .attr("fill", "red")
         .attr("dy", ".35em")
-        .text(function (d) {
+        .text(function (d, i) {
+            if (i < chartData.series.length) {
+                return "";
+            }
             return d;
         });
 
