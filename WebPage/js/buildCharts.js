@@ -251,3 +251,47 @@ function updatePortUseChart(filteredRows, entries) {
         buildPortUseChart(entriesFiltered);
     }
 }
+
+/** Questa funzione disegna il quarto grafico, relativo all'andamento del numero di pacchetti sulle varie flow entry **/
+function buildFocusContextChart(entries) {
+
+    //Estraggo i valori da rappresentare dalle entries
+
+    var i;
+    var chartData = [];
+    for (i = 0; i < entries.length; i++) {
+        chartData.push({
+            id: parseInt(entries[i].id),
+            packets: parseInt(entries[i].n_packets)
+        });
+    }
+
+    //Adesso ordino i dati per numero di pacchetti decrescente
+    chartData.sort(function (a, b) {
+        return b.packets - a.packets;
+    });
+
+    drawFocusContextChart(chartData);
+
+
+}
+
+/** Questa funzione aggiorna il quarto grafico, relativo all'andamento del numero di pacchetti sulle varie flow entry **/
+function updateFocusContextChart(filteredRows, entries) {
+    var i, j;
+    var entriesFiltered = [];
+    for (i = 0; i < filteredRows.length; i++) {
+        var found = false;
+        var id = $(filteredRows[i].children[1]).html();
+        for (j = 0; j < entries.length && !found; j++) {
+            if (entries[j].id === id) {
+                found = true;
+                entriesFiltered.push(entries[j]);
+            }
+        }
+    }
+
+    if (entriesFiltered.length > 0) {
+        buildFocusContextChart(entriesFiltered);
+    }
+}
