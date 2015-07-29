@@ -205,6 +205,34 @@ function drawFocusContextChart(data) {
                 });
         }
 
+        /* Aggiungo i tip alle barre */
+        $('.barFocus').tipsy({
+            gravity: 'sw',
+            html: true,
+            title: function () {
+                console.log(this);
+
+                /* Estraggo l'entry corretta */
+                var i, entry;
+                var found = false;
+                for (i = 0; i < entries.length && !found; i++) {
+                    if (entries[i].id === this.id) {
+                        entry = entries[i];
+                        found = true;
+                    }
+                }
+
+                var description = "Ciao";
+
+                //            var description = "type: " + entry.packetType + "<br>";
+                //            description += "ip in: " + entry.ip_add_in + "<br>";
+                //            description += "ip out: " + entry.ip_add_out + "<br>";
+                return description;
+
+            }
+        });
+
+
         // Al momento accantono l'idea perchè esteticamente poco efficace
         //focus.select(".y.axis").call(yAxis);
         focus.select(".x.axis").call(xAxis);
