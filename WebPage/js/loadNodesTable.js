@@ -11,7 +11,8 @@ $(document).ready(function () {
             {
                 data: "nodeType"
             },
-        ]
+        ],
+        "order": [[1, 'desc']],
     });
 
     $('#nodes tbody').on('click', 'tr', function () {

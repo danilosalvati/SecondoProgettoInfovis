@@ -41,7 +41,8 @@ function drawFocusContextChart(data) {
 
     var xAxis = d3.svg.axis()
         .scale(x)
-        .orient("bottom");
+        .orient("bottom")
+        .tickValues([]);
 
     var xAxis2 = d3.svg.axis()
         .scale(x2)
@@ -208,26 +209,35 @@ function drawFocusContextChart(data) {
         }
 
         /* Aggiungo i tip alle barre */
-        $('.barFocus').tipsy({
-            gravity: 'sw',
-            html: true,
-            title: function () {
-                /* Estraggo l'entry corretta */
-                var entry = entries[parseInt(this.id)];
+        if (ids.length < 50) {
+            $('.barFocus').tipsy({
+                gravity: 'sw',
+                html: true,
+                title: function () {
+                    /* Estraggo l'entry corretta */
+                    var entry = entries[parseInt(this.id)];
 
-                /* Scrivo la descrizione */
-                var description = "type: " + entry.packetType + "<br>";
-                description += "ip in: " + entry.ip_add_in + "<br>";
-                description += "ip out: " + entry.ip_add_out + "<br>";
-                description += "packets: " + entry.n_packets + "<br>";
-                return description;
+                    /* Scrivo la descrizione */
+                    var description = "type: " + entry.packetType + "<br>";
+                    description += "ip in: " + entry.ip_add_in + "<br>";
+                    description += "ip out: " + entry.ip_add_out + "<br>";
+                    description += "packets: " + entry.n_packets + "<br>";
+                    return description;
 
-            }
-        });
+                }
+            });
+        }
 
 
         // Al momento accantono l'idea perchè esteticamente poco efficace
         //focus.select(".y.axis").call(yAxis);
+
+        //Mostro i valori sull'asse delle x se non sono troppo numerosi
+        if (ids.length < 50) {
+            xAxis.tickValues(ids);
+        } else {
+            xAxis.tickValues([]);
+        }
         focus.select(".x.axis").call(xAxis);
     }
 
