@@ -102,7 +102,6 @@ function buildTreeGraph(entries, nodeName, toMatchArray) {
      * di interesse
      *********************************/
     var json = matchingFilter(entries, toMatchArray, nodeName);
-    console.log(json.children[0].children[1]);
 
     /* Adesso che ho creato l'oggetto json con i giusti valori posso
      * costruire l'albero */

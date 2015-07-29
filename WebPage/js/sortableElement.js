@@ -1,6 +1,8 @@
-//sfrutta massicciamente jquery()
+//DEBUG
+var generalToMatchArray = defaultToMatchArray;
 
-function makeSelection (toMatchArray){
+//definisce i bottoni relativi al sort per il grafico e il comportamento di questi
+function makeSelection (){
 	$('#chartcontainer').append($('<div></div>').attr({
         id: 'sortableSelectorDiv'
     }));
@@ -12,7 +14,7 @@ function makeSelection (toMatchArray){
 		data-max-options:"5"
 	}));
 
-	toMatchArray.forEach( function (elem){
+	generalToMatchArray.forEach( function (elem){
 		var stringToAppend = '<option>'+elem.description+'</option>'
 		$('#selector').append(stringToAppend);
 	});

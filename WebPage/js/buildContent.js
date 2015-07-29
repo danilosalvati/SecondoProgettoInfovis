@@ -314,7 +314,6 @@ function addGraphContent() {
 
     $('#chart1title').html("Albero di matching");
 
-
     $('#chartcontainer').append($('<svg></svg>').attr({
         id: 'chart1',
         class: 'chart',
