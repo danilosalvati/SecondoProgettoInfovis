@@ -1,21 +1,28 @@
-svg {
-  font: 10px sans-serif;
+.brush .extent {
+    stroke: #fff;
+    fill-opacity: .125;
+    shape-rendering: crispEdges;
 }
 
-.area {
-  fill: steelblue;
-  clip-path: url(#clip);
+.barFocus {
+    fill: steelblue;
+}
+
+.barFocus:hover {
+    fill: brown;
+}
+
+.axis {
+    font: 10px sans-serif;
 }
 
 .axis path,
 .axis line {
-  fill: none;
-  stroke: #000;
-  shape-rendering: crispEdges;
+    fill: none;
+    stroke: #000;
+    shape-rendering: crispEdges;
 }
 
-.brush .extent {
-  stroke: #fff;
-  fill-opacity: .125;
-  shape-rendering: crispEdges;
+.x.axis path {
+    display: none;
 }

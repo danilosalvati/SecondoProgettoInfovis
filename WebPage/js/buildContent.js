@@ -360,6 +360,4 @@ function addGraphContent() {
         class: 'chart',
     }));
 
-
-
 }

@@ -255,12 +255,23 @@ function updatePortUseChart(filteredRows, entries) {
 /** Questa funzione disegna il quarto grafico, relativo all'andamento del numero di pacchetti sulle varie flow entry **/
 function buildFocusContextChart(entries) {
 
-    d3.csv("/json/data.csv", type, function (error, data) {
-        //console.log(type);
-        console.log(data);
-        console.log(error);
-        drawFocusContextChart(data)
+    //Estraggo i valori da rappresentare dalle entries
+
+    var i;
+    var chartData = [];
+    for (i = 0; i < entries.length; i++) {
+        chartData.push({
+            id: parseInt(entries[i].id),
+            packets: parseInt(entries[i].n_packets)
+        });
+    }
+
+    //Adesso ordino i dati per numero di pacchetti decrescente
+    chartData.sort(function (a, b) {
+        return b.packets - a.packets;
     });
+
+    drawFocusContextChart(chartData);
 
 
 }
@@ -283,12 +294,4 @@ function updateFocusContextChart(filteredRows, entries) {
     if (entriesFiltered.length > 0) {
         buildFocusContextChart(entriesFiltered);
     }
-}
-
-var parseDate = d3.time.format("%b %Y").parse;
-
-function type(d) {
-    d.date = parseDate(d.date);
-    d.price = +d.price;
-    return d;
 }
