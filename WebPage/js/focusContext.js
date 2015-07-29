@@ -27,10 +27,10 @@ function drawFocusContextChart(data) {
 
 
     var x = d3.scale.ordinal()
-        .rangeRoundBands([0, width], .1);
+        .rangeBands([0, width], .1);
 
     var x2 = d3.scale.ordinal()
-        .rangeRoundBands([0, width], .1);
+        .rangeBands([0, width], .1);
 
     var y = d3.scale.linear()
         .range([height, 0]);
@@ -148,7 +148,6 @@ function drawFocusContextChart(data) {
 
     function brushed() {
         var ids = getBrushedIds(brush.extent()[0], brush.extent()[1]);
-        console.log(ids);
         x.domain(brush.empty() ? x2.domain() : ids);
 
         var enterData = [];
@@ -180,6 +179,9 @@ function drawFocusContextChart(data) {
                 .attr("x", function (d) {
                     return x(d.id);
                 })
+                .attr("id", function (d) {
+                    return d.id;
+                })
                 .attr("width", x.rangeBand())
                 .attr("y", function (d) {
                     return y(d.packets);
@@ -210,23 +212,14 @@ function drawFocusContextChart(data) {
             gravity: 'sw',
             html: true,
             title: function () {
-                console.log(this);
-
                 /* Estraggo l'entry corretta */
-                var i, entry;
-                var found = false;
-                for (i = 0; i < entries.length && !found; i++) {
-                    if (entries[i].id === this.id) {
-                        entry = entries[i];
-                        found = true;
-                    }
-                }
+                var entry = entries[parseInt(this.id)];
 
-                var description = "Ciao";
-
-                //            var description = "type: " + entry.packetType + "<br>";
-                //            description += "ip in: " + entry.ip_add_in + "<br>";
-                //            description += "ip out: " + entry.ip_add_out + "<br>";
+                /* Scrivo la descrizione */
+                var description = "type: " + entry.packetType + "<br>";
+                description += "ip in: " + entry.ip_add_in + "<br>";
+                description += "ip out: " + entry.ip_add_out + "<br>";
+                description += "packets: " + entry.n_packets + "<br>";
                 return description;
 
             }

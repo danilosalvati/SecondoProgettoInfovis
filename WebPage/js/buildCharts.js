@@ -271,7 +271,7 @@ function buildFocusContextChart(entries) {
         return b.packets - a.packets;
     });
 
-    drawFocusContextChart(chartData);
+    drawFocusContextChart(chartData, entries);
 
 
 }
