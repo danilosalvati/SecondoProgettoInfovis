@@ -14,7 +14,7 @@ function makeSelection() {
         id: 'selector',
         class: 'selectpicker',
         multiple: '',
-        "data-max-options": "1"
+        "data-max-options": "5"
     }));
 
     //lo riempio delle opzioni di default
