@@ -69,15 +69,23 @@ function defualtExpandFunction(elem, index, array){
 }
 
 
-/*************array di default per una prima generazione dell'albero*****************/
-//todo array generale che contiene tutte le nuove tipologie
-var defaultToMatchArray = [];
+/**********genero l'universalToMatchArray****************/
+//array generico che contiene tutti i valori ToMatch
+
+var universalToMatchArray=[];
 
 var ipFieldName="ip_add"
 var ipOutToMatch = new ToMatch(ipFieldName+"_out", findIpV4Netmask,defualtExpandFunction);
 ipOutToMatch.description="destination ip";
-defaultToMatchArray.push(ipOutToMatch);
+universalToMatchArray.push(ipOutToMatch);
 
 var typeFieldName="packetType"
 var typeToMatch = new ToMatch(typeFieldName);
+universalToMatchArray.push(typeToMatch);
+
+
+/*************array di default per una prima generazione dell'albero*****************/
+//todo array generale che contiene tutte le nuove tipologie
+var defaultToMatchArray = [];
+defaultToMatchArray.push(ipOutToMatch);
 defaultToMatchArray.push(typeToMatch);

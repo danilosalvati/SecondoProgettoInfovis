@@ -1,6 +1,8 @@
 //DEBUG TODO=costruire il generale, lasciarne uno di default, assegnarlo al grafico.
 var generalToMatchArray = defaultToMatchArray;
 
+
+
 //definisce i bottoni relativi al sort per il grafico e il comportamento di questi
 function makeSelection() {
     $('#chartcontainer').append($('<form></form>').attr({
@@ -22,7 +24,7 @@ function makeSelection() {
     });
 
     //introduco un bottone per il reset
-    $('#sortableSelectorForm').append($('<button>reset selection</button>').attr({
+    $('#sortableSelectorForm').append($('<button>reimposta la selezione</button>').attr({
         type: "button",
         id: "reset_button",
         class: "btn btn-info"
@@ -39,5 +41,9 @@ function startSelection (){
     //aggiungo il comportamento del button
     $('#reset_button').click(function () {
         $('#selector').selectpicker('deselectAll');
+    });
+
+    $('#selector').change(function (){
+        this.text
     });
 }
