@@ -1,40 +1,40 @@
-//DEBUG
+//DEBUG TODO=costruire il generale, lasciarne uno di default, assegnarlo al grafico.
 var generalToMatchArray = defaultToMatchArray;
 
 //definisce i bottoni relativi al sort per il grafico e il comportamento di questi
 function makeSelection() {
-    $('#chartcontainer').append($('<div></div>').attr({
-        id: 'sortableSelectorDiv'
+    $('#chartcontainer').append($('<form></form>').attr({
+        id: 'sortableSelectorForm'
     }));
 
-    $('#sortableSelectorDiv').append($('<select></select>').attr({
+    //costruisco il selettore
+    $('#sortableSelectorForm').append($('<select></select>').attr({
         id: 'selector',
         class: 'selectpicker',
         multiple,
         "data-max-options": "5"
     }));
-
+    //lo riempio delle opzioni di default
     generalToMatchArray.forEach(function (elem) {
         var stringToAppend = '<option>' + elem.description + '</option>'
         $('#selector').append(stringToAppend);
     });
 
-    $('#sortableSelectorDiv').append($('<ul></ul>').attr({
-        id: 'sortable',
+    //gli assegno il comportamento
+    $('#selector').selectpicker({
+        style: 'btn-info',
+        width: '50%'
+    });
+
+    //introduco un bottone per il reset
+    $('#sortableSelectorForm').append($('<button></button>').attr({
+    	type:"button",
+    	id:"reset_button",
+    	class:"btn btn-info"
     }));
-
-    $('#sortable').sortable();
-    $("#sortable").disableSelection();
-
-    $("#selector").change(function () {
-        var selectedValue;
-        $("#selector option:selected").each(function () {
-            selectedValue.push($(this).text());
-        });
-        $('#sortable:option').remove();
-        selectedValue.forEach(function (elem) {
-            var stringToAppend = '<li>' + elem + '</li>'
-            $('#sortable').append(stringToAppend);
-        });
+    
+    //aggiungo il comportamento del button
+    $('#reset_button').click( function(){
+    	$('#selectpicker').selectpicker('deselectAll');
     });
 }
