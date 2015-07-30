@@ -194,6 +194,15 @@ function buildTree(json) {
             .attr("r", function (d) {
                 return d.radius;
             })
+            .attr("value", function (d) {
+                return d.value;
+                //Decommentare se si preferisce mostrare i valori solo per le foglie
+                //                if (d.size != undefined) {
+                //                    return d.value;
+                //                } else {
+                //                    return -1;
+                //                }
+            })
             .style("opacity", ".8")
             .style("fill", function (d) {
                 return d._children ? "lightsteelblue" : "#fff";
@@ -283,6 +292,29 @@ function buildTree(json) {
             d.x0 = d.x;
             d.y0 = d.y;
         });
+
+
+        /* Aggiungo i tip alle barre */
+        $('#chart1 circle').tipsy({
+            gravity: 'w',
+            html: true,
+            title: function () {
+                var value = $(this)[0].getAttribute('value');
+                var description = "numero di entry: " + value + "<br>";
+                return description;
+                //Decommentare se si preferisce mostrare solo i valori delle foglie
+                //                if (value !== "-1") {
+                //                    var description = "numero di entry: " + value + "<br>";
+                //                    return description;
+                //                } else {
+                //                    return "";
+                //                }
+
+            }
+        });
+
+
+
     }
 
     // Toggle children.
