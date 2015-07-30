@@ -5,12 +5,13 @@
 }
 
 .barFocus {
-    fill: steelblue;
+    fill: #4682B4;
 }
-
+/*
 .barFocus:hover {
     fill: brown;
 }
+*/
 
 .axis {
     font: 10px sans-serif;

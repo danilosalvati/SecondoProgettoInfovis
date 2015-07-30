@@ -209,8 +209,8 @@ function drawFocusContextChart(data) {
         }
 
         /* Aggiungo i tip alle barre */
-        if (ids.length < 50) {
-            $('.barFocus').tipsy({
+        if (ids.length < 50 && ids.length != 0) {
+            $('.focus .barFocus').tipsy({
                 gravity: 'sw',
                 html: true,
                 title: function () {
@@ -226,6 +226,22 @@ function drawFocusContextChart(data) {
 
                 }
             });
+
+
+            /* Aggiungo l'effetto hover per tutte le barre con i tip */
+            $('.focus .barFocus').hover(function () {
+                $(this).css({
+                    fill: 'brown'
+                });
+            }, function (d, i) {
+                var color = d3.scale.category20();
+                $(this).css({
+                    fill: color('#4682B4')
+                })
+            });
+
+        } else {
+            $('.focus .barFocus').tipsy('disable');
         }
 
 
