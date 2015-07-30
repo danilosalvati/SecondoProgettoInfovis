@@ -1,8 +1,3 @@
-//DEBUG TODO=costruire il generale, lasciarne uno di default, assegnarlo al grafico.
-var generalToMatchArray = defaultToMatchArray;
-
-
-
 //definisce i bottoni relativi al sort per il grafico e il comportamento di questi
 function makeSelection() {
     $('#chartcontainer').append($('<form></form>').attr({
@@ -18,7 +13,7 @@ function makeSelection() {
     }));
 
     //lo riempio delle opzioni di default
-    generalToMatchArray.forEach(function (elem) {
+    universalToMatchArray.forEach(function (elem) {
         var stringToAppend = '<option>' + elem.description + '</option>'
         $('#selector').append(stringToAppend);
     });
