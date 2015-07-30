@@ -28,3 +28,16 @@ function makeSelection() {
         class: "btn btn-info"
     }));
 }
+
+function startSelection (){
+    //gli assegno il comportamento
+    $('.selectpicker').selectpicker({
+        style: 'btn-info',
+        width: '50%'
+    });
+
+    //aggiungo il comportamento del button
+    $('#reset_button').click(function () {
+        $('#selector').selectpicker('deselectAll');
+    });
+}

@@ -303,18 +303,7 @@ function buildFlowTable(nameNode) {
         }
 
         $(document).ready(function () {
-
-            //gli assegno il comportamento
-            $('.selectpicker').selectpicker({
-                style: 'btn-info',
-                width: '50%'
-            });
-
-            //aggiungo il comportamento del button
-            $('#reset_button').click(function () {
-                $('#selector').selectpicker('deselectAll');
-            });
-
+            startSelection();
         });
 
     });
