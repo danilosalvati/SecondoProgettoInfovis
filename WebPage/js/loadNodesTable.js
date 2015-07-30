@@ -23,6 +23,10 @@ $(document).ready(function () {
         buildFlowTable(nodeName);
     });
 
+    //Ricalcolo la larghezza delle colonne (così sistemo un bug sullo scrollX)
+    var table = $('#nodes').DataTable();
+    table.columns.adjust().draw();
+
     /* Creo la seconda tabella dei nodi */
     var nodeTable2 = $('#nodes2').dataTable({
         ajax: "../json/JSONNodes.json",
