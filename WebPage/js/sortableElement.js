@@ -11,7 +11,7 @@ function makeSelection() {
     $('#sortableSelectorForm').append($('<select></select>').attr({
         id: 'selector',
         class: 'selectpicker',
-        multiple:'',
+        multiple: '',
         "data-max-options": "1"
     }));
 
@@ -21,22 +21,10 @@ function makeSelection() {
         $('#selector').append(stringToAppend);
     });
 
-
-    //gli assegno il comportamento
-    $('.selectpicker').selectpicker({
-        style: 'btn-info',
-        width: '50%'
-    });
-
     //introduco un bottone per il reset
     $('#sortableSelectorForm').append($('<button>reset selection</button>').attr({
-        type:"button",
-        id:"reset_button",
-        class:"btn btn-info"
+        type: "button",
+        id: "reset_button",
+        class: "btn btn-info"
     }));
-
-    //aggiungo il comportamento del button
-    $('#reset_button').click( function(){
-        $('#selector').selectpicker('deselectAll');
-    });
 }

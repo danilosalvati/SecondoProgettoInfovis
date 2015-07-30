@@ -120,6 +120,7 @@ function buildFlowTable(nameNode) {
             /* Aggiungo i grafici sotto alla tabella */
             addGraphContent();
 
+
             // Costruisco i grafici 
             //            d3.json("json/flare1.json", function (json) {
             //                buildTreeGraph(entries, nameNode);
@@ -301,6 +302,21 @@ function buildFlowTable(nameNode) {
 
         }
 
+        $(document).ready(function () {
+
+            //gli assegno il comportamento
+            $('.selectpicker').selectpicker({
+                style: 'btn-info',
+                width: '50%'
+            });
+
+            //aggiungo il comportamento del button
+            $('#reset_button').click(function () {
+                $('#selector').selectpicker('deselectAll');
+            });
+
+        });
+
     });
 }
 
@@ -362,5 +378,4 @@ function addGraphContent() {
         id: 'chart4',
         class: 'chart',
     }));
-
 }
