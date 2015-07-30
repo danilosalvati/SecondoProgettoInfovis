@@ -12,6 +12,9 @@ function findIpV4Netmask(value) {
     return netaddressDotQuad + '/' + netmask;
 }
 
+
+/*********************************definizione dell'oggetto**********************************/
+
 //oggetto dell'array toMatch
 var ToMatch = function (name, clusterFun, expandFun) {
     //attributo json che identifica il campo di interesse
@@ -34,16 +37,8 @@ var ToMatch = function (name, clusterFun, expandFun) {
         };
     else
         this.expand = expandFun;
-}
 
-//questa funzione è argomento di un array.forEach()
-function defualtExpandFunction(elem, index, array){
-    //queste funzioni avranno tutte questa forma
-    var oldFieldName=this.fieldName;
-    var res = new ToMatch(oldFieldName);
-    array.splice(index + 1, 0, res); //aggiungo il nuovo ToMatch dopo il precedente  
-    this.toExpand=false;
-    return this.toExpand;
+    this.description=name;
 }
 
 //fa in modo tale che tutti i toMatch abbiano eseguito le loro funzioni di expand
@@ -61,11 +56,26 @@ function normalizeToMatchArray(toMatchArray) {
     }while(redo);
 }
 
-//esempio di toMatchArray
+/*****************funzioni di espanzione dei livelli*************************/
+//queste funzioni sono argomento di un array.forEach()
+
+function defualtExpandFunction(elem, index, array){
+    //queste funzioni avranno tutte questa forma
+    var oldFieldName=this.fieldName;
+    var res = new ToMatch(oldFieldName);
+    array.splice(index + 1, 0, res); //aggiungo il nuovo ToMatch dopo il precedente  
+    this.toExpand=false;
+    return this.toExpand;
+}
+
+
+/*************array di default per una prima generazione dell'albero*****************/
+//todo array generale che contiene tutte le nuove tipologie
 var defaultToMatchArray = [];
 
 var ipFieldName="ip_add"
 var ipOutToMatch = new ToMatch(ipFieldName+"_out", findIpV4Netmask,defualtExpandFunction);
+ipOutToMatch.description="destination ip";
 defaultToMatchArray.push(ipOutToMatch);
 
 var typeFieldName="packetType"

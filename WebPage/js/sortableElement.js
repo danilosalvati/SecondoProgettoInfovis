@@ -11,30 +11,32 @@ function makeSelection() {
     $('#sortableSelectorForm').append($('<select></select>').attr({
         id: 'selector',
         class: 'selectpicker',
-        multiple,
-        "data-max-options": "5"
+        multiple:'',
+        "data-max-options": "1"
     }));
+
     //lo riempio delle opzioni di default
     generalToMatchArray.forEach(function (elem) {
         var stringToAppend = '<option>' + elem.description + '</option>'
         $('#selector').append(stringToAppend);
     });
 
+
     //gli assegno il comportamento
-    $('#selector').selectpicker({
+    $('.selectpicker').selectpicker({
         style: 'btn-info',
         width: '50%'
     });
 
     //introduco un bottone per il reset
-    $('#sortableSelectorForm').append($('<button></button>').attr({
-    	type:"button",
-    	id:"reset_button",
-    	class:"btn btn-info"
+    $('#sortableSelectorForm').append($('<button>reset selection</button>').attr({
+        type:"button",
+        id:"reset_button",
+        class:"btn btn-info"
     }));
-    
+
     //aggiungo il comportamento del button
     $('#reset_button').click( function(){
-    	$('#selectpicker').selectpicker('deselectAll');
+        $('#selector').selectpicker('deselectAll');
     });
 }
