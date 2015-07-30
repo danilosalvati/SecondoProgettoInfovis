@@ -298,6 +298,10 @@ function buildFlowTable(nameNode) {
                 updateTreeGraph(filteredRows, entries, nameNode);
                 updateFocusContextChart(filteredRows, entries);
 
+                $(document).ready(function () {
+                    startSelection();
+                });
+
             });
 
         }
