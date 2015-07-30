@@ -45,13 +45,18 @@ function getMinAndMaxValues(jsonNode) {
 }
 
 /** Questa funzione setta la dimenzione dello strokeFill e del raggio per ogni nodo */
-function setStrokeFillAndRadius(jsonNode, widthScale, radiusScale) {
+function setStrokeFillAndRadiusAndColor(jsonNode, widthScale, radiusScale, parentColor) {
+
+    //Imposto il colore del nodo
+    if (parentColor !== undefined) {
+        jsonNode.color = parentColor;
+    }
 
     if (jsonNode.children === null) {
 
         var i;
         for (i = 0; i < jsonNode._children.length; i++) {
-            setStrokeFillAndRadius(jsonNode._children[i], widthScale, radiusScale);
+            setStrokeFillAndRadiusAndColor(jsonNode._children[i], widthScale, radiusScale, jsonNode.color);
         }
 
     } else {
@@ -60,7 +65,7 @@ function setStrokeFillAndRadius(jsonNode, widthScale, radiusScale) {
             // Il nodo che ho preso in considerazione non è una foglia
             var i;
             for (i = 0; i < jsonNode.children.length; i++) {
-                setStrokeFillAndRadius(jsonNode.children[i], widthScale, radiusScale);
+                setStrokeFillAndRadiusAndColor(jsonNode.children[i], widthScale, radiusScale, jsonNode.color);
             }
         }
     }
@@ -125,7 +130,16 @@ function buildTree(json) {
 
     root.value = minAndMax.max;
 
-    setStrokeFillAndRadius(root, widthScale, radiusScale);
+    //Imposto il colore per i primi figli
+    var colorScale = d3.scale.category10();
+    var i;
+    for (i = 0; i < root.children.length; i++) {
+        root.children[i].color = colorScale(i);
+    }
+
+    setStrokeFillAndRadiusAndColor(root, widthScale, radiusScale);
+
+    console.log(root);
 
     update(root);
 
@@ -165,7 +179,9 @@ function buildTree(json) {
         nodeEnter.append("svg:circle")
             .attr("r", 1e-6)
             .style("fill", function (d) {
-                return d._children ? "lightsteelblue" : "#fff";
+                //return d._children ? "lightsteelblue" : "#fff";
+                //return d._children ? d.color : "#fff";
+                return d.color;
             });
 
         nodeEnter.append("svg:text")
@@ -203,9 +219,11 @@ function buildTree(json) {
                 //                    return -1;
                 //                }
             })
-            .style("opacity", ".8")
+            .style("opacity", ".85")
             .style("fill", function (d) {
-                return d._children ? "lightsteelblue" : "#fff";
+                //return d._children ? "lightsteelblue" : "#fff";
+                //return d._children ? d.color : "#fff";
+                return d.color;
             });
 
         nodeUpdate.select("text")
@@ -261,7 +279,26 @@ function buildTree(json) {
                     }
                 }
             })
-            .style("opacity", ".5")
+            .style("opacity", ".3")
+            .style("stroke", function (d) {
+                var i;
+                var arr;
+
+                if (d.source.children !== null) {
+                    arr = d.source.children;
+                } else {
+                    arr = d.source._children;
+                }
+
+                for (i = 0; i < arr.length; i++) {
+                    if (arr[i].id === d.target.id) {
+                        return arr[i].color;
+                    }
+                }
+
+                return d.color;
+            })
+            //            .style("stroke", "#fff")
             .transition()
             .duration(duration)
             .attr("d", diagonal);
