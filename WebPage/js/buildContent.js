@@ -268,6 +268,10 @@ function buildFlowTable(nameNode) {
                 }
             });
 
+            //Ricalcolo la larghezza delle colonne (così sistemo un bug sullo scrollX)
+            var table = $('#flows').DataTable();
+            table.columns.adjust().draw();
+
             /* Prendo i dati per ogni ricerca */
             $('#flows').on('search.dt', function () {
                 var filteredRows = table.$('tr', {
@@ -352,7 +356,7 @@ function addGraphContent() {
         id: 'chart4title',
     }));
 
-    $('#chart4title').html("Andamento del numero di pacchetti per flows<br><br>");
+    $('#chart4title').html("Andamento del numero di pacchetti per flow entry<br><br>");
 
     $('#chartcontainer').append($('<svg></svg>').attr({
         id: 'chart4',
