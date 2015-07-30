@@ -139,8 +139,6 @@ function buildTree(json) {
 
     setStrokeFillAndRadiusAndColor(root, widthScale, radiusScale);
 
-    console.log(root);
-
     update(root);
 
 
