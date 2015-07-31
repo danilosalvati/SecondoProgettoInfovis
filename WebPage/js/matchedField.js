@@ -13,7 +13,7 @@ function findIpV4Netmask(value) {
 }
 
 
-/*********************************definizione dell'oggetto**********************************/
+/*********************************definizione dell'oggetto ToMatch**********************************/
 
 //oggetto dell'array toMatch
 var ToMatch = function (name, clusterFun, expandFun) {
@@ -39,26 +39,14 @@ var ToMatch = function (name, clusterFun, expandFun) {
         this.expand = expandFun;
 
     this.description=name;
-}
 
-//fa in modo tale che tutti i toMatch abbiano eseguito le loro funzioni di expand
-function normalizeToMatchArray(toMatchArray) {
-    //esegue fintanto esiste un campo con expand non di default
-    // potrebbe non essere necessario
-    //poco robusto può portare a loop
-    do{
-        redo=false;
-        toMatchArray.forEach(function (elem, index, array) {
-            if(elem.toExpand){
-                redo=elem.expand(elem, index, array) || redo;
-            }
-        });
-    }while(redo);
+    this.refresh= function (){
+        this.toExpand=true;
+    }
 }
 
 /*****************funzioni di espanzione dei livelli*************************/
 //queste funzioni sono argomento di un array.forEach()
-
 function defualtExpandFunction(elem, index, array){
     //queste funzioni avranno tutte questa forma
     var oldFieldName=this.fieldName;
@@ -68,24 +56,72 @@ function defualtExpandFunction(elem, index, array){
     return this.toExpand;
 }
 
+/*******************definizione dell'oggetto ToMAtchArray******************/
+function getToMatchArrayFrom(array){
+    var res=[];
+    array.forEach(function(elem){
+        res.push(elem);
+    });
+    return res;
+}
 
-/**********genero l'universalToMatchArray****************/
-//array generico che contiene tutti i valori ToMatch
+//fa in modo tale che tutti i toMatch abbiano eseguito le loro funzioni di expand
+function normalizeToMatchArray(toMatchArray) {
+    //esegue fintanto esiste un campo con expand non di default
+    // potrebbe non essere necessario
+    res = getToMatchArrayFrom(toMatchArray);
+    do{
+        redo=false;
+        res.forEach(function (elem, index, array) {
+            if(elem.toExpand){
+                redo=elem.expand(elem, index, array) || redo;
+            }
+        });
+    }while(redo);
+    return res; 
+}
 
-var universalToMatchArray=[];
+var ToMatchArray = function (){
 
-var ipFieldName="ip_add"
-var ipOutToMatch = new ToMatch(ipFieldName+"_out", findIpV4Netmask,defualtExpandFunction);
-ipOutToMatch.description="destination ip";
-universalToMatchArray.push(ipOutToMatch);
+    /**********genero l'universalToMatchArray****************/
+    //array generico che contiene tutti i valori ToMatch
 
-var typeFieldName="packetType"
-var typeToMatch = new ToMatch(typeFieldName);
-universalToMatchArray.push(typeToMatch);
+    this.universal = [];
+
+    var ipFieldName="ip_add"
+    var ipOutToMatch = new ToMatch(ipFieldName+"_out", findIpV4Netmask,defualtExpandFunction);
+    ipOutToMatch.description="destination ip";
+    this.universal.push(ipOutToMatch);
+
+    var typeFieldName="packetType"
+    var typeToMatch = new ToMatch(typeFieldName);
+    this.universal.push(typeToMatch);
 
 
-/*************array di default per una prima generazione dell'albero*****************/
-//todo array generale che contiene tutte le nuove tipologie
-var defaultToMatchArray = [];
-defaultToMatchArray.push(ipOutToMatch);
-defaultToMatchArray.push(typeToMatch);
+    /*************array di default per una prima generazione dell'albero*****************/
+    //todo array generale che contiene tutte le nuove tipologie
+    this.defaultToMatch = [];
+    this.defaultToMatch.push(ipOutToMatch);
+    this.defaultToMatch.push(typeToMatch);
+
+
+    /***************array che verra modificato dall'interfaccia utente************/
+    this.selected =getToMatchArrayFrom(this.defaultToMatch);
+    this.normalized = normalizeToMatchArray(this.selected);
+    this.changed = false;
+
+    //richiamare sempre questa funzione per costruire l'albero
+    //ritorna l'oggetto utile a costruire l'albero
+    this.getSelected = function (){
+        if(changed){
+            this.selected.forEach(function(elem){
+                elem.refresh();
+            });
+            this.normalized=normalizeToMatchArray(this.selected);
+        }
+        return this.normalized;
+    }
+}
+
+//costruisco il toMatchArray object
+var defaultToMatchArray = new ToMatchArray(); 

@@ -94,8 +94,7 @@ function buildTreeGraph(entries, nodeName, toMatchArray) {
 
     //se non specificato ne prende uno di default
     if (toMatchArray === undefined){
-        toMatchArray = defaultToMatchArray;
-        normalizeToMatchArray(defaultToMatchArray);
+        toMatchArray = defaultToMatchArray.getSelected();
     }
     /*********************************
      * Per prima cosa converto le entries nel formato
