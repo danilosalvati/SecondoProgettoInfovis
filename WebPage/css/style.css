@@ -61,7 +61,7 @@ tr.shown td.details-control {
 
 .node circle {
     cursor: pointer;
-    fill: #eee;
+    fill: #eef;
     /*    stroke: steelblue;*/
     
     stroke-width: 1.5px;
