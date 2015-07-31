@@ -297,6 +297,10 @@ function buildFlowTable(nameNode) {
 
                 updateTreeGraph(filteredRows, entries, nameNode);
                 updateFocusContextChart(filteredRows, entries);
+
+                $(document).ready(function () {
+                    startSelection();
+                });
             });
 
         }
@@ -311,18 +315,16 @@ function buildFlowTable(nameNode) {
 /** Questa funzione aggiunge gli elementi che si occupano del disegno dei grafici **/
 function addGraphContent() {
 
-    $('#content').append($('<h3></h3>').attr({
-        id: 'chart1title',
-        class: 'toRemove'
-    }));
-
-    $('#chart1title').html("Albero di matching");
-    makeSelection('#content');
-
     $('#content').append($('<div></div>').attr({
         id: 'chartcontainer',
     }));
 
+    $('#chartcontainer').append($('<h3></h3>').attr({
+        id: 'chart1title',
+    }));
+
+    $('#chart1title').html("Albero di matching");
+    makeSelection('#chartcontainer');
 
     $('#chartcontainer').append($('<svg></svg>').attr({
         id: 'chart1',
