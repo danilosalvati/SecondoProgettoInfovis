@@ -1,6 +1,6 @@
 //definisce i bottoni relativi al sort per il grafico e il comportamento di questi
-function makeSelection() {
-    $('#chartcontainer').append($('<form></form>').attr({
+function makeSelection(toAppend) {
+    $(toAppend).append($('<form></form>').attr({
         id: 'sortableSelectorForm'
     }));
 
@@ -13,7 +13,7 @@ function makeSelection() {
     }));
 
     //lo riempio delle opzioni di default
-    universalToMatchArray.forEach(function (elem) {
+    defaultToMatchArray.universal.forEach(function (elem) {
         var stringToAppend = '<option>' + elem.description + '</option>'
         $('#selector').append(stringToAppend);
     });
@@ -27,6 +27,8 @@ function makeSelection() {
 }
 
 function startSelection (){
+
+
     //gli assegno il comportamento
     $('.selectpicker').selectpicker({
         style: 'btn-info',
@@ -38,7 +40,9 @@ function startSelection (){
         $('#selector').selectpicker('deselectAll');
     });
 
-    $('#selector').change(function (){
-        this.text
+    $('#selector').change(function(e){
+        e.preventDefault();
+        var selected = $(this).text();
+        console.log(selected);  
     });
 }
