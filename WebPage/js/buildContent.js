@@ -89,7 +89,7 @@ function buildFlowTable(nameNode) {
     $('#flows').remove();
     $('#chartcontainer').remove();
     $('#flowButton').remove();
-    $('br.toRemove').remove();
+    $('.toRemove').remove();
 
     $.getJSON("json/JSONFlows2.json", function (json) {
         /* Prendo le flow entry dello switch che mi interessa */
@@ -315,18 +315,20 @@ function buildFlowTable(nameNode) {
 
 /** Questa funzione aggiunge gli elementi che si occupano del disegno dei grafici **/
 function addGraphContent() {
+
+    $('#content').append($('<h3></h3>').attr({
+        id: 'chart1title',
+        class: 'toRemove'
+    }));
+
+    $('#chart1title').html("Albero di matching");
+    makeSelection('#content');
+
     $('#content').append($('<div></div>').attr({
         id: 'chartcontainer',
     }));
 
-    $('#chartcontainer').append($('<hr>'));
 
-    $('#chartcontainer').append($('<h3></h3>').attr({
-        id: 'chart1title',
-    }));
-
-    $('#chart1title').html("Albero di matching");
-    makeSelection();
     $('#chartcontainer').append($('<svg></svg>').attr({
         id: 'chart1',
         class: 'chart',
