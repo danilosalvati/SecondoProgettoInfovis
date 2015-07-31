@@ -113,7 +113,7 @@ var ToMatchArray = function (){
     //richiamare sempre questa funzione per costruire l'albero
     //ritorna l'oggetto utile a costruire l'albero
     this.getSelected = function (){
-        if(changed){
+        if(this.changed){
             this.selected.forEach(function(elem){
                 elem.refresh();
             });

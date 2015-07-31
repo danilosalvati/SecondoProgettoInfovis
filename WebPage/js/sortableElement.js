@@ -43,6 +43,6 @@ function startSelection (){
     $('#selector').change(function(e){
         e.preventDefault();
         var selected = $(this).text();
-        console.log(selected);  
+          
     });
 }
