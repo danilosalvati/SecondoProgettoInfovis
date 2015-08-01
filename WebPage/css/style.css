@@ -94,3 +94,13 @@ path.link {
     font-size: medium; 
     text-align: center; 
 }
+
+.sortable_placeholder { 
+    margin: 4px 4px 4px 0; 
+    padding: 1px; 
+    width: 100px; 
+    height: 30px;
+    font-size: medium; 
+    text-align: center;
+    box-shadow: 2px 2px 3px 0 #C4C4C4;
+}

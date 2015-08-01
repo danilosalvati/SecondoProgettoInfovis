@@ -59,8 +59,10 @@ function behavior() {
         width: '50%'
     });
 
-    $('#sortable').sortable();
-
+    $('#sortable').sortable({
+        placeholder: "sortable_placeholder",
+    });
+    
     //aggiungo il comportamento del button
     $('#reset_button').click(function () {
         $('#selector').selectpicker('deselectAll');
@@ -73,6 +75,7 @@ function behavior() {
         defaultToMatchArray.clicked(selected);
     });
 
+
 }
 
 //viene usata quando cambia il nodo
@@ -80,6 +83,18 @@ function startSelection(entries, nameNode) {
     behavior();
 
     inizializeItemHelper(defaultToMatchArray.getDefault());
+
+    $("#sortable" ).on( "sortbeforestop", function( event, ui ) {
+        var listOrder=[];
+        var positionSwap;
+        $(this).children().each(function(index,elem){
+            var current=$(elem).text();
+            if(current==="")
+                positionSwap=index-1;            
+        });
+        var itemSorted=$(ui.item).text();
+        defaultToMatchArray.sort(itemSorted,positionSwap);
+    } );
 
     //aggiungo il comportamento del button
     $('#draw_button').click(function () {

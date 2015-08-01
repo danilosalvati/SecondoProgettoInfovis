@@ -58,11 +58,9 @@ function defualtExpandFunction(elem, index, array){
 
 /*******************definizione dell'oggetto ToMAtchArray******************/
 function getToMatchArrayFrom(array){
-    var res=[];
-    array.forEach(function(elem){
-        res.push(elem);
+    return array.filter(function (){
+        return true;
     });
-    return res;
 }
 
 //fa in modo tale che tutti i toMatch abbiano eseguito le loro funzioni di expand
@@ -154,6 +152,16 @@ var ToMatchArray = function (){
     this.empty=function (){
         this.changed=true;
         this.selected=[];
+    }
+
+    this.sort= function(itemSorted, positionSwap){
+        this.changed=true;
+        this.selected.forEach(function (elem,index,array){
+            if(elem.description=== itemSorted){
+                array.splice(index,1);
+                array.splice(itemSorted,0, elem)
+            }
+        });
     }
 }
 
