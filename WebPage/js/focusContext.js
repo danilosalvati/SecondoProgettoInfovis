@@ -42,7 +42,14 @@ function drawFocusContextChart(data) {
     var xAxis = d3.svg.axis()
         .scale(x)
         .orient("bottom")
-        .tickValues([]);
+        .tickValues(function () {
+            if (xDomain.length < 50) {
+                return xDomain;
+            } else {
+                return [];
+            }
+        });
+    //.tickValues([]);
 
     var xAxis2 = d3.svg.axis()
         .scale(x2)
@@ -112,6 +119,9 @@ function drawFocusContextChart(data) {
         .attr("x", function (d) {
             return x(d.id);
         })
+        .attr("id", function (d) {
+            return d.id;
+        })
         .attr("width", x.rangeBand())
         .attr("y", function (d) {
             return y(d.packets);
@@ -146,6 +156,41 @@ function drawFocusContextChart(data) {
         .selectAll("rect")
         .attr("y", -6)
         .attr("height", height2 + 5);
+
+
+    /* Aggiungo i tip alle barre se non sono troppe */
+    if (xDomain.length < 50) {
+        $('.focus .barFocus').tipsy({
+            gravity: 'sw',
+            html: true,
+            title: function () {
+                /* Estraggo l'entry corretta */
+                var entry = entries[parseInt(this.id)];
+
+                /* Scrivo la descrizione */
+                var description = "type: " + entry.packetType + "<br>";
+                description += "ip in: " + entry.ip_add_in + "<br>";
+                description += "ip out: " + entry.ip_add_out + "<br>";
+                description += "packets: " + entry.n_packets + "<br>";
+                return description;
+
+            }
+        });
+
+        /* Aggiungo l'effetto hover per tutte le barre con i tip */
+        $('.focus .barFocus').hover(function () {
+            $(this).css({
+                fill: 'brown'
+            });
+        }, function () {
+            $(this).css({
+                fill: '#4682B4'
+            })
+        });
+
+    }
+
+
 
     function brushed() {
         var ids = getBrushedIds(brush.extent()[0], brush.extent()[1]);
@@ -199,6 +244,9 @@ function drawFocusContextChart(data) {
                 .attr("x", function (d) {
                     return x(d.id);
                 })
+                .attr("id", function (d) {
+                    return d.id;
+                })
                 .attr("width", x.rangeBand())
                 .attr("y", function (d) {
                     return y(d.packets);
@@ -209,7 +257,7 @@ function drawFocusContextChart(data) {
         }
 
         /* Aggiungo i tip alle barre */
-        if (ids.length < 50 && ids.length != 0) {
+        if (xDomain.length < 50 || (ids.length < 50 && ids.length !== 0)) {
             $('.focus .barFocus').tipsy({
                 gravity: 'sw',
                 html: true,
@@ -233,10 +281,9 @@ function drawFocusContextChart(data) {
                 $(this).css({
                     fill: 'brown'
                 });
-            }, function (d, i) {
-                var color = d3.scale.category20();
+            }, function () {
                 $(this).css({
-                    fill: color('#4682B4')
+                    fill: '#4682B4'
                 })
             });
 
@@ -249,8 +296,12 @@ function drawFocusContextChart(data) {
         //focus.select(".y.axis").call(yAxis);
 
         //Mostro i valori sull'asse delle x se non sono troppo numerosi
-        if (ids.length < 50) {
-            xAxis.tickValues(ids);
+        if (xDomain.length < 50 || (ids.length < 50 && ids.length !== 0)) {
+            if (ids.length !== 0) {
+                xAxis.tickValues(ids);
+            } else {
+                xAxis.tickValues(xDomain);
+            }
         } else {
             xAxis.tickValues([]);
         }
