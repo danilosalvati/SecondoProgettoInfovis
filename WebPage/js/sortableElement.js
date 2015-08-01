@@ -113,12 +113,19 @@ function startSelection(entries, nameNode) {
 
     $("#sortable").on("sortstop", function (event, ui) {
         sortableBehaviorHelper (this);
+        updateGraphcontainer();
+        buildTreeGraph(entries, nameNode);
     });
 
     //aggiungo il comportamento del button
     $('#draw_button').click(function () {
         updateGraphcontainer();
         buildTreeGraph(entries, nameNode);
+    });
+
+    $('.dropdown-menu').mouseleave(function (){
+        updateGraphcontainer();
+        buildTreeGraph(entries, nameNode);        
     });
 }
 
@@ -130,6 +137,8 @@ function updateSelection(filteredRows, entries, nameNode) {
 
     $("#sortable").on("sortstop", function (event, ui) {
         sortableBehaviorHelper (this);
+        updateGraphcontainer();
+        buildTreeGraph(entries, nameNode);
     });
 
     //aggiungo il comportamento del button
@@ -137,4 +146,10 @@ function updateSelection(filteredRows, entries, nameNode) {
         updateGraphcontainer();
         updateTreeGraph(filteredRows, entries, nameNode);
     });
+
+    $('.dropdown-menu').mouseleave(function (){
+        updateGraphcontainer();
+        updateTreeGraph(filteredRows, entries, nameNode);
+    });
+    
 }
