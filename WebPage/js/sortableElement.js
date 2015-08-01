@@ -61,6 +61,15 @@ function inizializeItemHelper(input) {
     $('#sortable').sortable("refresh");
 }
 
+function sortableBehaviorHelper (){
+    var itemSorted = [];
+    $(this).children().each(function (index, elem) {
+        itemSorted.push($(elem).text());
+    });
+    console.log(itemSorted);
+    defaultToMatchArray.sort(itemSorted);
+}
+
 function behavior() {
     //gli assegno il comportamento
     $('.selectpicker').selectpicker({
@@ -101,12 +110,7 @@ function startSelection(entries, nameNode) {
     inizializeItemHelper(defaultToMatchArray.getDefault());
 
     $("#sortable").on("sortstop", function (event, ui) {
-        var itemSorted = [];
-        $(this).children().each(function (index, elem) {
-            itemSorted.push($(elem).text());
-        });
-        console.log(itemSorted);
-        defaultToMatchArray.sort(itemSorted);
+        sortableBehaviorHelper ()
     });
 
     //aggiungo il comportamento del button
@@ -122,6 +126,10 @@ function updateSelection(filteredRows, entries, nameNode) {
     behavior();
 
     inizializeItemHelper(defaultToMatchArray.selected);
+
+    $("#sortable").on("sortstop", function (event, ui) {
+        sortableBehaviorHelper ()
+    });
 
     //aggiungo il comportamento del button
     $('#draw_button').click(function () {
