@@ -85,6 +85,8 @@ function behavior() {
     $('#reset_button').click(function () {
         $('#selector').selectpicker('deselectAll');
         defaultToMatchArray.empty();
+        $('#sortable').empty();
+        $('#sortable').sortable('refresh');
     });
 
     $('.dropdown-menu li').click(function (e) {

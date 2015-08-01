@@ -92,7 +92,8 @@ function buildTree(json) {
         });
 
     var vis = d3.select("#chart1")
-        .attr("width", w + m[1] + m[3])
+        // .attr("width", w + m[1] + m[3])
+        .attr("width", '100%')
         .attr("height", h + m[0] + m[2])
         .append("svg:g")
         .attr("transform", "translate(" + m[3] + "," + m[0] + ")");
