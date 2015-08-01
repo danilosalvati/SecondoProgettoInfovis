@@ -78,29 +78,34 @@ path.link {
     stroke-width: 1.5px;
 }
 
-#sortable { 
+#sortable {
     list-style-type: none;
     margin: 0;
     padding: 0;
     width: 450px;
 }
 
-#sortable li { 
-    margin: 4px 4px 4px 0; 
-    padding: 1px; 
-    float: left; 
-    width: 100px; 
-    height: 30px; 
-    font-size: medium; 
-    text-align: center; 
-}
-
-.sortable_placeholder { 
-    margin: 4px 4px 4px 0; 
-    padding: 1px; 
-    width: 100px; 
+#sortable li.sortable_placeholder {
+    margin: 4px 4px 4px 0;
+    padding: 1px;
+    float: left;
+    width: 100px;
     height: 30px;
-    font-size: medium; 
+    font-size: medium;
     text-align: center;
     box-shadow: 2px 2px 3px 0 #C4C4C4;
+    background: none;
+}
+
+#sortable li.ui-sortable-handle {
+    margin: 4px 4px 4px 0;
+    padding: 4px 6px;
+    float: left;
+    height: 30px;
+    font-size: medium;
+    text-align: center;
+    background: #337AB7 50% 50% repeat-x;
+    color: white;
+    border: 1px solid transparent;
+    border-radius: 4px;
 }
