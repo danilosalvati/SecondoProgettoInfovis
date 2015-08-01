@@ -30,17 +30,26 @@ function makeSelection(toAppend) {
         id: "draw_button",
         class: "btn btn-info"
     }));
+
+    $('#sortableSelectorForm').append('<ul id="sortable"></ul>');
+    // $('#sortable').append('<li class="ui-state-default">1</li>');
 }
 
 //funzione di supporto che serve a inserire il nuovo grafico disegnato
 function updateGraphcontainer() {
-    $("#chart1").empty(); //Svuota il contenuto del vecchio svg
-    // IL BUG ERA QUI DOVE AVEVI SCRITTO $('chart1').remove(); (IN PRATICA NON RIMUOVEVA MAI IL VECCHIO SVG)
-    //$('#chart1').remove();
-    //    $('#chart1div').append($('<svg></svg>').attr({
-    //        id: 'chart1',
-    //        class: 'chart',
-    //    }));
+    $("#chart1").empty();
+}
+
+//questa funzione aggiorna gli elementi nei bottoni secondo l'array di input
+function inizializeItemHelper(input){
+    var daSelezionare = [];
+    input.forEach(function (elem) {
+        var descrizione=elem.description;
+        daSelezionare.push(descrizione);
+        $('#sortable').append('<li class="ui-state-default">'+descrizione+'</li>');
+    });
+    $('.selectpicker').selectpicker('val', daSelezionare);
+    $('#sortable').sortable("refresh");
 }
 
 function behavior() {
@@ -49,6 +58,8 @@ function behavior() {
         style: 'btn-info',
         width: '50%'
     });
+
+    $('#sortable').sortable();
 
     //aggiungo il comportamento del button
     $('#reset_button').click(function () {
@@ -61,17 +72,14 @@ function behavior() {
         var selected = $(this).text();
         defaultToMatchArray.clicked(selected);
     });
+
 }
 
 //viene usata quando cambia il nodo
 function startSelection(entries, nameNode) {
     behavior();
 
-    var daSelezionare = [];
-    defaultToMatchArray.getDefault().forEach(function (elem) {
-        daSelezionare.push(elem.description);
-    });
-    $('.selectpicker').selectpicker('val', daSelezionare);
+    inizializeItemHelper(defaultToMatchArray.getDefault());
 
     //aggiungo il comportamento del button
     $('#draw_button').click(function () {
@@ -85,11 +93,7 @@ function startSelection(entries, nameNode) {
 function updateSelection(filteredRows, entries, nameNode) {
     behavior();
 
-    var daSelezionare = [];
-    defaultToMatchArray.selected.forEach(function (elem) {
-        daSelezionare.push(elem.description);
-    });
-    $('.selectpicker').selectpicker('val', daSelezionare);
+    inizializeItemHelper(defaultToMatchArray.selected);
 
     //aggiungo il comportamento del button
     $('#draw_button').click(function () {

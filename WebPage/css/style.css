@@ -77,3 +77,20 @@ path.link {
     stroke: #ccc;
     stroke-width: 1.5px;
 }
+
+#sortable { 
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    width: 450px;
+}
+
+#sortable li { 
+    margin: 4px 4px 4px 0; 
+    padding: 1px; 
+    float: left; 
+    width: 100px; 
+    height: 30px; 
+    font-size: medium; 
+    text-align: center; 
+}

@@ -122,15 +122,14 @@ var ToMatchArray = function (){
         if(this.changed){
             refreshAll(this.selected);
             this.normalized=normalizeToMatchArray(this.selected);
+            this.changed=false;
         }
         return this.normalized;
     }
 
     this.getDefault= function(){
-        if(this.changed){
-            this.selected=getToMatchArrayFrom(this.defaultToMatch);
-            refreshAll(this.selected);
-        }
+        this.selected=getToMatchArrayFrom(this.defaultToMatch);
+        refreshAll(this.selected);
         return this.selected;
     }
 
@@ -150,11 +149,6 @@ var ToMatchArray = function (){
                 daCercare=false;
             }
         }
-        var toStamp="";
-        this.selected.forEach(function (elem){
-            toStamp+=elem.description+" ";
-        });
-        console.log(toStamp);
     }
 
     this.empty=function (){
