@@ -134,12 +134,14 @@ var ToMatchArray = function (){
     this.clicked= function (descriptionSelected){
         this.changed=true;
         var daCercare=true;
+        var rimosso=false;
         for(var i=0; daCercare && i<this.selected.length; i++){
             if(this.selected[i].description===descriptionSelected){
                 this.selected.splice(i,1);//lo rimuovo
                 daCercare=false;
+                rimosso=true;
             }
-        }
+        } 
         //se invece non c'è lo aggiungo e per farlo devo cercarlo tra l'universal
         for(var i=0;daCercare && i<this.universal.length; i++){
             if(this.universal[i].description===descriptionSelected){
@@ -147,6 +149,7 @@ var ToMatchArray = function (){
                 daCercare=false;
             }
         }
+        return rimosso;
     }
 
     this.empty=function (){
@@ -154,14 +157,19 @@ var ToMatchArray = function (){
         this.selected=[];
     }
 
-    this.sort= function(itemSorted, positionSwap){
-        this.changed=true;
-        this.selected.forEach(function (elem,index,array){
-            if(elem.description=== itemSorted){
-                array.splice(index,1);
-                array.splice(itemSorted,0, elem)
+    this.sort= function(itemSorted){
+        var descriptionSelected;
+        var nuovoSelected=[];
+        for(var i=0; i<itemSorted.length; i++){
+            descriptionSelected=itemSorted[i];
+            for(var j=0; j<this.selected.length; j++){
+                if(this.selected[j].description===descriptionSelected){
+                    nuovoSelected.push(this.selected[j]);
+                }
             }
-        });
+        }
+        this.selected=nuovoSelected;
+        this.changed=true;
     }
 }
 

@@ -32,7 +32,6 @@ function makeSelection(toAppend) {
     }));
 
     $('#sortableSelectorForm').append('<ul id="sortable"></ul>');
-    // $('#sortable').append('<li class="ui-state-default">1</li>');
 }
 
 //funzione di supporto che serve a inserire il nuovo grafico disegnato
@@ -72,10 +71,17 @@ function behavior() {
     $('.dropdown-menu li').click(function (e) {
         e.preventDefault();
         var selected = $(this).text();
-        defaultToMatchArray.clicked(selected);
+        var rimosso=defaultToMatchArray.clicked(selected);
+        if(rimosso){
+            $('#sortable li').each(function(index, elem){
+                if($(elem).text()===selected){
+                    $(elem).remove();
+                }
+            });
+        }else
+            $('#sortable').append('<li class="ui-state-default">'+selected+'</li>');
+        $('#sortable').sortable('refresh');
     });
-
-
 }
 
 //viene usata quando cambia il nodo
@@ -84,16 +90,13 @@ function startSelection(entries, nameNode) {
 
     inizializeItemHelper(defaultToMatchArray.getDefault());
 
-    $("#sortable" ).on( "sortbeforestop", function( event, ui ) {
-        var listOrder=[];
-        var positionSwap;
+    $("#sortable" ).on( "sortstop", function( event, ui ) {
+        var itemSorted=[];
         $(this).children().each(function(index,elem){
-            var current=$(elem).text();
-            if(current==="")
-                positionSwap=index-1;            
+            itemSorted.push($(elem).text());
         });
-        var itemSorted=$(ui.item).text();
-        defaultToMatchArray.sort(itemSorted,positionSwap);
+        console.log(itemSorted);
+        defaultToMatchArray.sort(itemSorted);
     } );
 
     //aggiungo il comportamento del button
