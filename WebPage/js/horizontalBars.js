@@ -39,7 +39,8 @@ function drawChart(chartData, chartNumber, gapBetweenGroups) {
     // Specify the chart area and dimensions
     var chart = d3.select("#chart" + chartNumber)
         //.attr("width", spaceForLabels + chartWidth + spaceForLegend)
-        .attr("width", 1000)
+        //.attr("width", 1000)
+        .attr("width", "100%")
         .attr("height", chartHeight);
 
     //        var chart = d3.select(".chart")
