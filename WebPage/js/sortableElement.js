@@ -24,11 +24,24 @@ function makeSelection(toAppend) {
         id: "reset_button",
         class: "btn btn-info"
     }));
+
+    $('#sortableSelectorForm').append($('<button>disegna</button>').attr({
+        type: "button",
+        id: "draw_button",
+        class: "btn btn-info"
+    }));
 }
 
-function startSelection (){
+//funzione di supporto che serve a inserire il nuovo grafico disegnato
+function updateGraphcontainer(){
+    $('chart1').remove();
+    $('#chart1div').append($('<svg></svg>').attr({
+        id: 'chart1',
+        class: 'chart',
+    }));
+}
 
-
+function behavior(){
     //gli assegno il comportamento
     $('.selectpicker').selectpicker({
         style: 'btn-info',
@@ -38,11 +51,47 @@ function startSelection (){
     //aggiungo il comportamento del button
     $('#reset_button').click(function () {
         $('#selector').selectpicker('deselectAll');
+        defaultToMatchArray.empty();
     });
 
-    $('#selector').change(function(e){
+    $('.dropdown-menu li').click(function(e){
         e.preventDefault();
         var selected = $(this).text();
-          
+        defaultToMatchArray.clicked(selected);      
+    });    
+}
+
+//viene usata quando cambia il nodo
+function startSelection (entries, nameNode){
+    behavior();
+
+    var daSelezionare=[];
+    defaultToMatchArray.getDefault().forEach(function (elem){
+        daSelezionare.push(elem.description);
     });
+    $('.selectpicker').selectpicker('val',daSelezionare);
+
+    //aggiungo il comportamento del button
+    $('#draw_button').click(function () {
+        updateGraphcontainer();
+        buildTreeGraph(entries, nameNode);
+    });   
+
+}
+
+//viene usata quando cambia il filtro sui dati
+function updateSelection (filteredRows, entries, nameNode){
+    behavior();
+
+    var daSelezionare=[];    
+    defaultToMatchArray.selected.forEach(function (elem){
+        daSelezionare.push(elem.description);
+    });
+    $('.selectpicker').selectpicker('val',daSelezionare);
+
+    //aggiungo il comportamento del button
+    $('#draw_button').click(function () {
+        updateGraphcontainer();
+        updateTreeGraph(filteredRows, entries, nameNode);
+    });   
 }

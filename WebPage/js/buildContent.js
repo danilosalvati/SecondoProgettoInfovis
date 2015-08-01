@@ -120,12 +120,6 @@ function buildFlowTable(nameNode) {
             /* Aggiungo i grafici sotto alla tabella */
             addGraphContent();
 
-
-            // Costruisco i grafici 
-            //            d3.json("json/flare1.json", function (json) {
-            //                buildTreeGraph(entries, nameNode);
-            //            });
-
             setTimeout(function () {
                 buildTreeGraph(entries, nameNode);
             }, 0);
@@ -299,14 +293,14 @@ function buildFlowTable(nameNode) {
                 updateFocusContextChart(filteredRows, entries);
 
                 $(document).ready(function () {
-                    startSelection();
+                    updateSelection(filteredRows, entries, nameNode);
                 });
             });
 
         }
 
         $(document).ready(function () {
-            startSelection();
+            startSelection(entries, nameNode);
         });
 
     });
@@ -323,10 +317,16 @@ function addGraphContent() {
         id: 'chart1title',
     }));
 
+
+
     $('#chart1title').html("Albero di matching");
     makeSelection('#chartcontainer');
 
-    $('#chartcontainer').append($('<svg></svg>').attr({
+    $('#chartcontainer').append($('<div></div>').attr({
+        id: 'chart1div'
+    }));
+
+    $('#chart1div').append($('<svg></svg>').attr({
         id: 'chart1',
         class: 'chart',
     }));

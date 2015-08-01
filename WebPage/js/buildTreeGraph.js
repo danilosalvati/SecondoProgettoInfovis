@@ -71,20 +71,28 @@ function matchingFilter(entries, toMatchArray, nodeName) {
 
     if (nodeName === undefined)
         nodeName = "selected_node";
-    actualMatch = toMatchArray[0];
-
-    //le entries ripartite per children filtrate rispetto all'attributo attualmente
-    //preso in considerazione
-    //i filtered sono i famosi cluster filtrati
-    filtered = clusterizedFlow(entries, actualMatch);
     root.name = nodeName;
 
-    if (filtered.length !== 0)
-        root.children = [];
+    if(toMatchArray.length>0){
+        actualMatch = toMatchArray[0];
 
-    //espando gli envenutali cluster
-    for (var i = 0; i < filtered.length; i++) {
-        root.children.push(matchingFilterHelper(filtered[i], toMatchArray, 1));
+        //le entries ripartite per children filtrate rispetto all'attributo attualmente
+        //preso in considerazione
+        //i filtered sono i famosi cluster filtrati
+        filtered = clusterizedFlow(entries, actualMatch);
+
+        if (filtered.length !== 0)
+            root.children = [];
+
+        //espando gli envenutali cluster
+        for (var i = 0; i < filtered.length; i++) {
+            root.children.push(matchingFilterHelper(filtered[i], toMatchArray, 1));
+        }
+    }else{ 
+        root.children=[{
+            name: "nessun criterio selezionato",
+            size:1
+        }];
     }
     return root;
 }

@@ -81,6 +81,12 @@ function normalizeToMatchArray(toMatchArray) {
     return res; 
 }
 
+function refreshAll(array){
+    array.forEach(function(elem){
+        elem.refresh();
+    });
+}
+
 var ToMatchArray = function (){
 
     /**********genero l'universalToMatchArray****************/
@@ -110,16 +116,50 @@ var ToMatchArray = function (){
     this.normalized = normalizeToMatchArray(this.selected);
     this.changed = false;
 
-    //richiamare sempre questa funzione per costruire l'albero
+    //richiamare solo per costruire l'albero
     //ritorna l'oggetto utile a costruire l'albero
     this.getSelected = function (){
         if(this.changed){
-            this.selected.forEach(function(elem){
-                elem.refresh();
-            });
+            refreshAll(this.selected);
             this.normalized=normalizeToMatchArray(this.selected);
         }
         return this.normalized;
+    }
+
+    this.getDefault= function(){
+        if(this.changed){
+            this.selected=getToMatchArrayFrom(this.defaultToMatch);
+            refreshAll(this.selected);
+        }
+        return this.selected;
+    }
+
+    this.clicked= function (descriptionSelected){
+        this.changed=true;
+        var daCercare=true;
+        for(var i=0; daCercare && i<this.selected.length; i++){
+            if(this.selected[i].description===descriptionSelected){
+                this.selected.splice(i,1);//lo rimuovo
+                daCercare=false;
+            }
+        }
+        //se invece non c'è lo aggiungo e per farlo devo cercarlo tra l'universal
+        for(var i=0;daCercare && i<this.universal.length; i++){
+            if(this.universal[i].description===descriptionSelected){
+                this.selected.push(this.universal[i]);//lo aggiungo
+                daCercare=false;
+            }
+        }
+        var toStamp="";
+        this.selected.forEach(function (elem){
+            toStamp+=elem.description+" ";
+        });
+        console.log(toStamp);
+    }
+
+    this.empty=function (){
+        this.changed=true;
+        this.selected=[];
     }
 }
 
