@@ -24,7 +24,7 @@ function buildFrequentEntryChart(entries) {
     for (i = 0; i < entries.length; i++) {
         data.push({
             id: entries[i].id,
-            packets: entries[i].n_packets
+            packets: parseInt(entries[i].n_packets)
         });
     }
 

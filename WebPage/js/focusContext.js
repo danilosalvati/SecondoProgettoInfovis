@@ -194,7 +194,12 @@ function drawFocusContextChart(data) {
 
     function brushed() {
         var ids = getBrushedIds(brush.extent()[0], brush.extent()[1]);
-        x.domain(brush.empty() ? x2.domain() : ids);
+        if (ids.length > 0) {
+            x.domain(ids);
+        } else {
+            x.domain(x2.domain());
+        }
+
 
         var enterData = [];
         var i;
@@ -205,6 +210,7 @@ function drawFocusContextChart(data) {
                 j++;
             }
         }
+
 
         //Al momento accantono l'idea perchè esteticamente poco efficace
         // Scalo l'asse delle y

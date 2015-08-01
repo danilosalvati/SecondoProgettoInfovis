@@ -1,10 +1,10 @@
 /** Questa funzione disegna un horizontal bar chart **/
 function drawChart(chartData, chartNumber, gapBetweenGroups) {
 
-    var chartWidth = 600,
+    var chartWidth = 800,
         barHeight = 20,
         groupHeight = barHeight * chartData.series.length,
-        spaceForLabels = 100,
+        spaceForLabels = 50,
         spaceForLegend = 170;
 
     if (gapBetweenGroups === undefined) {
