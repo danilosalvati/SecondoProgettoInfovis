@@ -38,27 +38,27 @@ var ToMatch = function (name, clusterFun, expandFun) {
     else
         this.expand = expandFun;
 
-    this.description=name;
+    this.description = name;
 
-    this.refresh= function (){
-        this.toExpand=true;
+    this.refresh = function () {
+        this.toExpand = true;
     }
 }
 
 /*****************funzioni di espanzione dei livelli*************************/
 //queste funzioni sono argomento di un array.forEach()
-function defualtExpandFunction(elem, index, array){
+function defualtExpandFunction(elem, index, array) {
     //queste funzioni avranno tutte questa forma
-    var oldFieldName=this.fieldName;
+    var oldFieldName = this.fieldName;
     var res = new ToMatch(oldFieldName);
     array.splice(index + 1, 0, res); //aggiungo il nuovo ToMatch dopo il precedente  
-    this.toExpand=false;
+    this.toExpand = false;
     return this.toExpand;
 }
 
 /*******************definizione dell'oggetto ToMAtchArray******************/
-function getToMatchArrayFrom(array){
-    return array.filter(function (){
+function getToMatchArrayFrom(array) {
+    return array.filter(function () {
         return true;
     });
 }
@@ -68,36 +68,41 @@ function normalizeToMatchArray(toMatchArray) {
     //esegue fintanto esiste un campo con expand non di default
     // potrebbe non essere necessario
     res = getToMatchArrayFrom(toMatchArray);
-    do{
-        redo=false;
+    do {
+        redo = false;
         res.forEach(function (elem, index, array) {
-            if(elem.toExpand){
-                redo=elem.expand(elem, index, array) || redo;
+            if (elem.toExpand) {
+                redo = elem.expand(elem, index, array) || redo;
             }
         });
-    }while(redo);
-    return res; 
+    } while (redo);
+    return res;
 }
 
-function refreshAll(array){
-    array.forEach(function(elem){
+function refreshAll(array) {
+    array.forEach(function (elem) {
         elem.refresh();
     });
 }
 
-var ToMatchArray = function (){
+var ToMatchArray = function () {
 
     /**********genero l'universalToMatchArray****************/
     //array generico che contiene tutti i valori ToMatch
 
     this.universal = [];
 
-    var ipFieldName="ip_add"
-    var ipOutToMatch = new ToMatch(ipFieldName+"_out", findIpV4Netmask,defualtExpandFunction);
-    ipOutToMatch.description="destination ip";
+    var ipFieldName = "ip_add"
+    var ipOutToMatch = new ToMatch(ipFieldName + "_out", findIpV4Netmask, defualtExpandFunction);
+    ipOutToMatch.description = "destination ip";
     this.universal.push(ipOutToMatch);
 
-    var typeFieldName="packetType"
+    var ipInFieldName = "ip_add"
+    var ipInToMatch = new ToMatch(ipInFieldName + "_in", findIpV4Netmask, defualtExpandFunction);
+    ipInToMatch.description = "source ip";
+    this.universal.push(ipInToMatch);
+
+    var typeFieldName = "packetType"
     var typeToMatch = new ToMatch(typeFieldName);
     this.universal.push(typeToMatch);
 
@@ -110,68 +115,68 @@ var ToMatchArray = function (){
 
 
     /***************array che verra modificato dall'interfaccia utente************/
-    this.selected =getToMatchArrayFrom(this.defaultToMatch);
+    this.selected = getToMatchArrayFrom(this.defaultToMatch);
     this.normalized = normalizeToMatchArray(this.selected);
     this.changed = false;
 
     //richiamare solo per costruire l'albero
     //ritorna l'oggetto utile a costruire l'albero
-    this.getSelected = function (){
-        if(this.changed){
+    this.getSelected = function () {
+        if (this.changed) {
             refreshAll(this.selected);
-            this.normalized=normalizeToMatchArray(this.selected);
-            this.changed=false;
+            this.normalized = normalizeToMatchArray(this.selected);
+            this.changed = false;
         }
         return this.normalized;
     }
 
-    this.getDefault= function(){
-        this.selected=getToMatchArrayFrom(this.defaultToMatch);
+    this.getDefault = function () {
+        this.selected = getToMatchArrayFrom(this.defaultToMatch);
         refreshAll(this.selected);
         return this.selected;
     }
 
-    this.clicked= function (descriptionSelected){
-        this.changed=true;
-        var daCercare=true;
-        var rimosso=false;
-        for(var i=0; daCercare && i<this.selected.length; i++){
-            if(this.selected[i].description===descriptionSelected){
-                this.selected.splice(i,1);//lo rimuovo
-                daCercare=false;
-                rimosso=true;
+    this.clicked = function (descriptionSelected) {
+        this.changed = true;
+        var daCercare = true;
+        var rimosso = false;
+        for (var i = 0; daCercare && i < this.selected.length; i++) {
+            if (this.selected[i].description === descriptionSelected) {
+                this.selected.splice(i, 1); //lo rimuovo
+                daCercare = false;
+                rimosso = true;
             }
-        } 
+        }
         //se invece non c'è lo aggiungo e per farlo devo cercarlo tra l'universal
-        for(var i=0;daCercare && i<this.universal.length; i++){
-            if(this.universal[i].description===descriptionSelected){
-                this.selected.push(this.universal[i]);//lo aggiungo
-                daCercare=false;
+        for (var i = 0; daCercare && i < this.universal.length; i++) {
+            if (this.universal[i].description === descriptionSelected) {
+                this.selected.push(this.universal[i]); //lo aggiungo
+                daCercare = false;
             }
         }
         return rimosso;
     }
 
-    this.empty=function (){
-        this.changed=true;
-        this.selected=[];
+    this.empty = function () {
+        this.changed = true;
+        this.selected = [];
     }
 
-    this.sort= function(itemSorted){
+    this.sort = function (itemSorted) {
         var descriptionSelected;
-        var nuovoSelected=[];
-        for(var i=0; i<itemSorted.length; i++){
-            descriptionSelected=itemSorted[i];
-            for(var j=0; j<this.selected.length; j++){
-                if(this.selected[j].description===descriptionSelected){
+        var nuovoSelected = [];
+        for (var i = 0; i < itemSorted.length; i++) {
+            descriptionSelected = itemSorted[i];
+            for (var j = 0; j < this.selected.length; j++) {
+                if (this.selected[j].description === descriptionSelected) {
                     nuovoSelected.push(this.selected[j]);
                 }
             }
         }
-        this.selected=nuovoSelected;
-        this.changed=true;
+        this.selected = nuovoSelected;
+        this.changed = true;
     }
 }
 
 //costruisco il toMatchArray object
-var defaultToMatchArray = new ToMatchArray(); 
+var defaultToMatchArray = new ToMatchArray();
