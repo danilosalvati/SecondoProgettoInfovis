@@ -33,15 +33,17 @@ function makeSelection(toAppend) {
 }
 
 //funzione di supporto che serve a inserire il nuovo grafico disegnato
-function updateGraphcontainer(){
-    $('chart1').remove();
-    $('#chart1div').append($('<svg></svg>').attr({
-        id: 'chart1',
-        class: 'chart',
-    }));
+function updateGraphcontainer() {
+    $("#chart1").empty(); //Svuota il contenuto del vecchio svg
+    // IL BUG ERA QUI DOVE AVEVI SCRITTO $('chart1').remove(); (IN PRATICA NON RIMUOVEVA MAI IL VECCHIO SVG)
+    //$('#chart1').remove();
+    //    $('#chart1div').append($('<svg></svg>').attr({
+    //        id: 'chart1',
+    //        class: 'chart',
+    //    }));
 }
 
-function behavior(){
+function behavior() {
     //gli assegno il comportamento
     $('.selectpicker').selectpicker({
         style: 'btn-info',
@@ -54,44 +56,44 @@ function behavior(){
         defaultToMatchArray.empty();
     });
 
-    $('.dropdown-menu li').click(function(e){
+    $('.dropdown-menu li').click(function (e) {
         e.preventDefault();
         var selected = $(this).text();
-        defaultToMatchArray.clicked(selected);      
-    });    
+        defaultToMatchArray.clicked(selected);
+    });
 }
 
 //viene usata quando cambia il nodo
-function startSelection (entries, nameNode){
+function startSelection(entries, nameNode) {
     behavior();
 
-    var daSelezionare=[];
-    defaultToMatchArray.getDefault().forEach(function (elem){
+    var daSelezionare = [];
+    defaultToMatchArray.getDefault().forEach(function (elem) {
         daSelezionare.push(elem.description);
     });
-    $('.selectpicker').selectpicker('val',daSelezionare);
+    $('.selectpicker').selectpicker('val', daSelezionare);
 
     //aggiungo il comportamento del button
     $('#draw_button').click(function () {
         updateGraphcontainer();
         buildTreeGraph(entries, nameNode);
-    });   
+    });
 
 }
 
 //viene usata quando cambia il filtro sui dati
-function updateSelection (filteredRows, entries, nameNode){
+function updateSelection(filteredRows, entries, nameNode) {
     behavior();
 
-    var daSelezionare=[];    
-    defaultToMatchArray.selected.forEach(function (elem){
+    var daSelezionare = [];
+    defaultToMatchArray.selected.forEach(function (elem) {
         daSelezionare.push(elem.description);
     });
-    $('.selectpicker').selectpicker('val',daSelezionare);
+    $('.selectpicker').selectpicker('val', daSelezionare);
 
     //aggiungo il comportamento del button
     $('#draw_button').click(function () {
         updateGraphcontainer();
         updateTreeGraph(filteredRows, entries, nameNode);
-    });   
+    });
 }
