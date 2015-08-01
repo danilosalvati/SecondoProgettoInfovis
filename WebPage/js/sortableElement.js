@@ -61,9 +61,9 @@ function inizializeItemHelper(input) {
     $('#sortable').sortable("refresh");
 }
 
-function sortableBehaviorHelper (){
+function sortableBehaviorHelper (context){
     var itemSorted = [];
-    $(this).children().each(function (index, elem) {
+    $(context).children().each(function (index, elem) {
         itemSorted.push($(elem).text());
     });
     console.log(itemSorted);
@@ -112,7 +112,7 @@ function startSelection(entries, nameNode) {
     inizializeItemHelper(defaultToMatchArray.getDefault());
 
     $("#sortable").on("sortstop", function (event, ui) {
-        sortableBehaviorHelper ()
+        sortableBehaviorHelper (this);
     });
 
     //aggiungo il comportamento del button
@@ -120,7 +120,6 @@ function startSelection(entries, nameNode) {
         updateGraphcontainer();
         buildTreeGraph(entries, nameNode);
     });
-
 }
 
 //viene usata quando cambia il filtro sui dati
@@ -130,7 +129,7 @@ function updateSelection(filteredRows, entries, nameNode) {
     inizializeItemHelper(defaultToMatchArray.selected);
 
     $("#sortable").on("sortstop", function (event, ui) {
-        sortableBehaviorHelper ()
+        sortableBehaviorHelper (this);
     });
 
     //aggiungo il comportamento del button
