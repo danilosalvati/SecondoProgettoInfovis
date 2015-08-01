@@ -124,8 +124,10 @@ function startSelection(entries, nameNode) {
     });
 
     $('.dropdown-menu').mouseleave(function (){
-        updateGraphcontainer();
-        buildTreeGraph(entries, nameNode);        
+        if(defaultToMatchArray.changed){
+            updateGraphcontainer();
+            buildTreeGraph(entries, nameNode);
+        }
     });
 }
 
@@ -148,8 +150,10 @@ function updateSelection(filteredRows, entries, nameNode) {
     });
 
     $('.dropdown-menu').mouseleave(function (){
-        updateGraphcontainer();
-        updateTreeGraph(filteredRows, entries, nameNode);
+        if(defaultToMatchArray.changed){
+            updateGraphcontainer();
+            updateTreeGraph(filteredRows, entries, nameNode);
+        }
     });
-    
+
 }
