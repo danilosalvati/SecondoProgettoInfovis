@@ -106,6 +106,14 @@ var ToMatchArray = function () {
     var typeToMatch = new ToMatch(typeFieldName);
     this.universal.push(typeToMatch);
 
+    var actionFieldName = "actions"
+    var actionToMatch = new ToMatch(actionFieldName);
+    this.universal.push(actionToMatch);
+
+    var inPortFieldName = "in_port"
+    var inPortToMatch = new ToMatch(inPortFieldName);
+    this.universal.push(inPortToMatch);
+
 
     /*************array di default per una prima generazione dell'albero*****************/
     //todo array generale che contiene tutte le nuove tipologie

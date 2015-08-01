@@ -9,7 +9,7 @@ function makeSelection(toAppend) {
         id: 'selector',
         class: 'selectpicker',
         multiple: '',
-        "data-max-options": "5"
+        "data-max-options": "4"
     }));
 
     //lo riempio delle opzioni di default
