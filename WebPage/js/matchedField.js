@@ -1,81 +1,28 @@
-//funzione di ausilio che trova la netmask made by Danilo
-function findIpV4Netmask(value) {
-    var netmask = '24'; // Di default ho una /24
-    /* Estraggo l'eventuale netmask dall'indirizzo ip */
-    var netmaskPosition = value.indexOf('/');
-    if (netmaskPosition !== -1) {
-        netmask = value.substring(netmaskPosition + 1, value.length);
-    }
-    /* Calcolo il prefisso utilizzando un'apposita libreria */
-    IPv4_Address(value, netmask);
-    //this.netaddressDotQuad è il prefisso ricavato.
-    return netaddressDotQuad + '/' + netmask;
-}
-
-
-/*********************************definizione dell'oggetto ToMatch**********************************/
-
-//oggetto dell'array toMatch
-var ToMatch = function (name, clusterFun, expandFun) {
-    //attributo json che identifica il campo di interesse
-    this.fieldName = name;
-    this.toExpand = true;
-    //funzione che modifica il valore del campo per confrontarlo
-    if (clusterFun === undefined) {
-        this.filter = function (a) {
-            return a;
-        }
-    } else {
-        this.filter = clusterFun;
-    }
-
-    //funzione che permette di introdurre un nuovo livello di filtering
-    if (expandFun === undefined)
-        this.expand = function () {
-            this.toExpand = false;
-            return this.toExpand;
-        };
-    else
-        this.expand = expandFun;
-
-    this.description = name;
-
-    this.refresh = function () {
-        this.toExpand = true;
-    }
-}
-
-/*****************funzioni di espanzione dei livelli*************************/
-//queste funzioni sono argomento di un array.forEach()
-function defualtExpandFunction(elem, index, array) {
-    //queste funzioni avranno tutte questa forma
-    var oldFieldName = this.fieldName;
-    var res = new ToMatch(oldFieldName);
-    array.splice(index + 1, 0, res); //aggiungo il nuovo ToMatch dopo il precedente  
-    this.toExpand = false;
-    return this.toExpand;
-}
-
 /*******************definizione dell'oggetto ToMAtchArray******************/
-function getToMatchArrayFrom(array) {
+//ritorna una copia dell'array precedente
+function copyFrom(array) {
     return array.filter(function () {
         return true;
     });
 }
 
 //fa in modo tale che tutti i toMatch abbiano eseguito le loro funzioni di expand
+//predispone l'array per l'elaborazione del parser delle flow
 function normalizeToMatchArray(toMatchArray) {
     //esegue fintanto esiste un campo con expand non di default
     // potrebbe non essere necessario
-    res = getToMatchArrayFrom(toMatchArray);
+    var maxExpansion = 5;//è comunque proibitivo disegnare un grafo di altezza pari  4
+    var i=0;
+    res = copyFrom(toMatchArray);
     do {
         redo = false;
+        i++;
         res.forEach(function (elem, index, array) {
             if (elem.toExpand) {
-                redo = elem.expand(elem, index, array) || redo;
+                redo = elem.expand(index, array) || redo;
             }
         });
-    } while (redo);
+    } while (redo && i<maxExpansion);
     return res;
 }
 
@@ -87,33 +34,9 @@ function refreshAll(array) {
 
 var ToMatchArray = function () {
 
-    /**********genero l'universalToMatchArray****************/
+    /**********genero l'universal****************/
     //array generico che contiene tutti i valori ToMatch
-
-    this.universal = [];
-
-    var ipFieldName = "ip_add"
-    var ipOutToMatch = new ToMatch(ipFieldName + "_out", findIpV4Netmask, defualtExpandFunction);
-    ipOutToMatch.description = "destination ip";
-    this.universal.push(ipOutToMatch);
-
-    var ipInFieldName = "ip_add"
-    var ipInToMatch = new ToMatch(ipInFieldName + "_in", findIpV4Netmask, defualtExpandFunction);
-    ipInToMatch.description = "source ip";
-    this.universal.push(ipInToMatch);
-
-    var typeFieldName = "packetType"
-    var typeToMatch = new ToMatch(typeFieldName);
-    this.universal.push(typeToMatch);
-
-    var actionFieldName = "actions"
-    var actionToMatch = new ToMatch(actionFieldName);
-    this.universal.push(actionToMatch);
-
-    var inPortFieldName = "in_port"
-    var inPortToMatch = new ToMatch(inPortFieldName);
-    this.universal.push(inPortToMatch);
-
+    this.universal = universalDefaultArray;
 
     /*************array di default per una prima generazione dell'albero*****************/
     //todo array generale che contiene tutte le nuove tipologie
@@ -123,7 +46,7 @@ var ToMatchArray = function () {
 
 
     /***************array che verra modificato dall'interfaccia utente************/
-    this.selected = getToMatchArrayFrom(this.defaultToMatch);
+    this.selected = copyFrom(this.defaultToMatch);
     this.normalized = normalizeToMatchArray(this.selected);
     this.changed = false;
 
@@ -139,7 +62,7 @@ var ToMatchArray = function () {
     }
 
     this.getDefault = function () {
-        this.selected = getToMatchArrayFrom(this.defaultToMatch);
+        this.selected = copyFrom(this.defaultToMatch);
         refreshAll(this.selected);
         return this.selected;
     }
