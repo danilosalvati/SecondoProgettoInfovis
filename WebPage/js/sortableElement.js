@@ -61,7 +61,7 @@ function inizializeItemHelper(input) {
     $('#sortable').sortable("refresh");
 }
 
-function sortableBehaviorHelper (context){
+function sortableBehaviorHelper(context) {
     var itemSorted = [];
     $(context).children().each(function (index, elem) {
         itemSorted.push($(elem).text());
@@ -112,7 +112,7 @@ function startSelection(entries, nameNode) {
     inizializeItemHelper(defaultToMatchArray.getDefault());
 
     $("#sortable").on("sortstop", function (event, ui) {
-        sortableBehaviorHelper (this);
+        sortableBehaviorHelper(this);
         updateGraphcontainer();
         buildTreeGraph(entries, nameNode);
     });
@@ -123,8 +123,8 @@ function startSelection(entries, nameNode) {
         buildTreeGraph(entries, nameNode);
     });
 
-    $('.dropdown-menu').mouseleave(function (){
-        if(defaultToMatchArray.changed){
+    $('.dropdown-menu').mouseleave(function () {
+        if (defaultToMatchArray.changed) {
             updateGraphcontainer();
             buildTreeGraph(entries, nameNode);
         }
@@ -138,9 +138,9 @@ function updateSelection(filteredRows, entries, nameNode) {
     inizializeItemHelper(defaultToMatchArray.selected);
 
     $("#sortable").on("sortstop", function (event, ui) {
-        sortableBehaviorHelper (this);
+        sortableBehaviorHelper(this);
         updateGraphcontainer();
-        buildTreeGraph(entries, nameNode);
+        updateTreeGraph(filteredRows, entries, nameNode);
     });
 
     //aggiungo il comportamento del button
@@ -149,8 +149,8 @@ function updateSelection(filteredRows, entries, nameNode) {
         updateTreeGraph(filteredRows, entries, nameNode);
     });
 
-    $('.dropdown-menu').mouseleave(function (){
-        if(defaultToMatchArray.changed){
+    $('.dropdown-menu').mouseleave(function () {
+        if (defaultToMatchArray.changed) {
             updateGraphcontainer();
             updateTreeGraph(filteredRows, entries, nameNode);
         }

@@ -66,7 +66,9 @@ function drawFocusContextChart(data) {
         .x(x2)
         .on("brush", brushed);
 
-    var svg = d3.select("#chart4").attr("width", width + margin.left + margin.right)
+    var svg = d3.select("#chart4")
+        //.attr("width", width + margin.left + margin.right)
+        .attr("width", "100%")
         .attr("height", height + margin.top + margin.bottom + 100).append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
