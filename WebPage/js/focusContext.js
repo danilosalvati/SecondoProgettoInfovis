@@ -38,6 +38,13 @@ function drawFocusContextChart(data) {
     var y2 = d3.scale.linear()
         .range([height2, 0]);
 
+    x.domain(xDomain);
+
+    x2.domain(x.domain());
+    y.domain([0, d3.max(data, function (d) {
+        return d.packets;
+    })]);
+    y2.domain(y.domain());
 
     var xAxis = d3.svg.axis()
         .scale(x)
@@ -62,23 +69,25 @@ function drawFocusContextChart(data) {
         .orient("left")
         .ticks(10);
 
+    function brushDefaultExtent() {
+        if (x2.range().length > 18) {
+            return x2.range()[19];
+        } else {
+            return 0;
+        }
+    }
+
     var brush = d3.svg.brush()
         .x(x2)
+        .extent([0, brushDefaultExtent()]) //Inizializzo il grafico affinchè visualizzi i primi 20 valori
         .on("brush", brushed);
 
-    var svg = d3.select("#chart4")
+    var svg = d3.select("#chart3")
         //.attr("width", width + margin.left + margin.right)
         .attr("width", "100%")
         .attr("height", height + margin.top + margin.bottom + 100).append("g")
         .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
-    x.domain(xDomain);
-
-    x2.domain(x.domain());
-    y.domain([0, d3.max(data, function (d) {
-        return d.packets;
-    })]);
-    y2.domain(y.domain());
 
     svg.append("defs").append("clipPath")
         .attr("id", "clip")
@@ -155,6 +164,7 @@ function drawFocusContextChart(data) {
     context.append("g")
         .attr("class", "x brush")
         .call(brush)
+        .call(brush.event)
         .selectAll("rect")
         .attr("y", -6)
         .attr("height", height2 + 5);
