@@ -67,8 +67,7 @@ var ToMatchArray = function () {
         return this.selected;
     }
 
-    this.clicked = function (descriptionSelected) {
-        this.changed = true;
+    this.clicked = function (descriptionSelected, reachmaxLength) {
         var daCercare = true;
         var rimosso = false;
         for (var i = 0; daCercare && i < this.selected.length; i++) {
@@ -76,13 +75,18 @@ var ToMatchArray = function () {
                 this.selected.splice(i, 1); //lo rimuovo
                 daCercare = false;
                 rimosso = true;
+                this.changed=true;
             }
         }
+
+        var daCercare = daCercare && reachmaxLength;
+        
         //se invece non c'è lo aggiungo e per farlo devo cercarlo tra l'universal
         for (var i = 0; daCercare && i < this.universal.length; i++) {
             if (this.universal[i].description === descriptionSelected) {
                 this.selected.push(this.universal[i]); //lo aggiungo
                 daCercare = false;
+                this.changed=true;
             }
         }
         return rimosso;

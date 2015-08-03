@@ -88,17 +88,17 @@ function behavior() {
         e.preventDefault();
         var selected = $(this).text();
         var maxLength=$('#selector').attr("data-max-options");
-        if(defaultToMatchArray.selected.length<maxLength){
-            var rimosso = defaultToMatchArray.clicked(selected);
-            if (rimosso) {
-                $('#sortable li').each(function (index, elem) {
-                    if ($(elem).text() === selected) {
-                        $(elem).remove();
-                    }
-                });
-            } else
-                $('#sortable').append('<li class="ui-state-default">' + selected + '</li>');
-            $('#sortable').sortable('refresh');
+        var reachMaxLength=defaultToMatchArray.selected.length<maxLength;
+        var rimosso = defaultToMatchArray.clicked(selected, reachMaxLength);
+        if (rimosso) {
+            $('#sortable li').each(function (index, elem) {
+                if ($(elem).text() === selected) {
+                    $(elem).remove();
+                }
+            });
+        } else if(reachMaxLength){
+            $('#sortable').append('<li class="ui-state-default">' + selected + '</li>');
+        $('#sortable').sortable('refresh');
         }
     });
 }
