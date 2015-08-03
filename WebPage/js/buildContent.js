@@ -94,6 +94,10 @@ function buildFlowTable(nameNode) {
     $.getJSON("json/JSONFlows2.json", function (json) {
         /* Prendo le flow entry dello switch che mi interessa */
         entries = json[nameNode];
+        var i;
+        for (i = 0; i < entries.length; i++) {
+            entries[i].duration = parseFloat(entries[i].duration.substring(0, entries[i].duration.length));
+        }
 
         if (entries != undefined) {
             $('#content').append($('<button></button>').attr({
@@ -171,7 +175,7 @@ function buildFlowTable(nameNode) {
 
                     },
                     {
-                        "title": "Duration",
+                        "title": "Duration (s)",
                         "data": "duration"
                     },
                     {
